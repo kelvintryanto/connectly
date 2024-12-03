@@ -57,33 +57,33 @@ export default function List() {
     );
   }
   return (
-    <>
-      
-
-      <div className="container mx-auto p-4">
-        <div className="flex flex-wrap -mx-4">
-          {/* Card 1 */}
-
-          {roomchat?.data?.length > 0 &&
-            roomchat?.data?.map((el) => {
-              return (
-                <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-4" key={el.id}>
-                  <div className="bg-white rounded-lg shadow-md p-4">
-                    <div className="mb-4">
-                      <h2 className="text-xl font-semibold text-gray-800">{el.name}</h2>
-                      <p className="text-gray-600">Happy Chating</p>
+    <div className="container mx-auto p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {roomchat?.data?.length > 0 && roomchat?.data?.map((el) => (
+                <div key={el.id} className="bg-white rounded-2xl shadow-sm hover:shadow-md transition duration-300 overflow-hidden border border-gray-100">
+                    <div className="h-48 overflow-hidden">
+                        <img 
+                            src={el.image || "https://via.placeholder.com/400x200"} 
+                            className="w-full h-full object-cover transform hover:scale-105 transition duration-300"
+                            alt={el.name}
+                        />
                     </div>
-                    <div className="flex justify-end items-end mt-4">
-                      <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={() => onJoin(el.id)}>
-                        Join
-                      </button>
+                    <div className="p-6">
+                        <h2 className="text-2xl font-semibold text-gray-700 mb-2">{el.name}</h2>
+                        <p className="text-gray-500 mb-4">Join this room to start chatting with others!</p>
+                        <div className="flex justify-between items-center">
+                            <span className="text-sm text-violet-500">{el.members || 0} members</span>
+                            <button 
+                                onClick={() => onJoin(el.id)}
+                                className="px-6 py-2 rounded-full bg-violet-100 text-violet-600 hover:bg-violet-200 transition duration-300"
+                            >
+                                Join Room
+                            </button>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              );
-            })}
+            ))}
         </div>
-      </div>
-    </>
+    </div>
   );
 }
