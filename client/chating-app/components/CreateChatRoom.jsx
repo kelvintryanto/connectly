@@ -66,12 +66,18 @@ export default function CreateChatRoom() {
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Create Room Chat</h2>
           <div className="flex justify-center">
-            <div className="flex w-24 h-24 rounded-full bg-yellow-300 justify-center text-center items-center">
+            <div className="relative flex w-24 h-24 rounded-full justify-center text-center items-center overflow-hidden">
               {previewUrl ? (
-                "test ada gambar"
+                <>
+                  <img src={previewUrl} alt="Preview" className="w-full object-cover" />
+                  {/* "test ada gambar" */}
+                  <label htmlFor={`upload`} className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer opacity-0 hover:opacity-100 transition-opacity rounded-full">
+                    <i className="fa-solid fa-camera text-lg"></i>
+                  </label>
+                </>
               ) : (
                 // Tampilkan ikon kamera dan tombol upload jika tidak ada gambar
-                <label htmlFor={`image`} className="flex items-center justify-center w-24 aspect-square bg-gray-200 rounded-full cursor-pointer">
+                <label htmlFor={`upload`} className="flex items-center justify-center w-24 aspect-square bg-gray-200 rounded-full cursor-pointer">
                   <div className="flex flex-col items-center text-center">
                     <i className="fa-solid fa-camera text-gray-500 text-lg"></i>
                     <span className="text-gray-500 text-sm">Upload Image</span>
@@ -97,7 +103,8 @@ export default function CreateChatRoom() {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Upload Image</label>
+              <input type="file" id={`upload`} className="hidden" onChange={handleFileChange} />
+              {/* <label className="block text-gray-700 font-medium mb-2">Upload Image</label>
               <input
                 type="file"
                 id="image"
@@ -106,8 +113,8 @@ export default function CreateChatRoom() {
                 className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                 onChange={(e) => {
                   handleUpload(e.target.files[0]);
-                }}
-              />
+                }} 
+              />*/}
             </div>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full">
               Create Room
