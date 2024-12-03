@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import { io } from "socket.io-client";
 import Toastify from "toastify-js";
 import socket from "..";
-export default function HomePage() {
+export default function HomePage({base_url}) {
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
   const [room, setRoom] = useState(0);
@@ -19,7 +19,7 @@ export default function HomePage() {
   async function fetchroomchat() {
     try {
       setIsLoading(true);
-      const { data } = await axios.get("http://localhost:3000/roomchat", {
+      const { data } = await axios.get(`${base_url}/roomchat`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -37,7 +37,7 @@ export default function HomePage() {
 
   async function fetchuser() {
     try {
-      const data = await axios.get("http://localhost:3000/find", {
+      const data = await axios.get(`${base_url}/find`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -88,7 +88,7 @@ export default function HomePage() {
       }
 
       // Fetch the chat data for the new room
-      const { data } = await axios.get(`http://localhost:3000/roomchat/${roomId}`, {
+      const { data } = await axios.get(`${base_url}/roomchat/${roomId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -109,7 +109,7 @@ export default function HomePage() {
   }
 
   async function fetchChat() {
-    const { data } = await axios.get(`http://localhost:3000/roomchat/${room}`, {
+    const { data } = await axios.get(`${base_url}/roomchat/${room}`, {
       headers: {
         Authorization: `Bearer ${localStorage.access_token}`,
       },
@@ -119,7 +119,7 @@ export default function HomePage() {
   }
   async function handleClear() {
     try {
-      const { data } = await axios.delete(`http://localhost:3000/clear/${room}`, {
+      const { data } = await axios.delete(`${base_url}/clear/${room}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -145,12 +145,14 @@ export default function HomePage() {
   }
   async function handleLeave(roomId) {
     try {
-      const { data } = await axios.delete(`http://localhost:3000/roomchat/leave/${roomId}`, {
+      const { data } = await axios.delete(`${base_url}/roomchat/leave/${roomId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
       fetchroomchat();
+    } catch (error) {
+      console.log(error);
 
       Toastify({
         text: `Success Leave Chat`,
@@ -166,8 +168,6 @@ export default function HomePage() {
         },
         onClick: function () {}, // Callback after click
       }).showToast();
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -175,7 +175,7 @@ export default function HomePage() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `http://localhost:3000/chats/${room}`,
+        `${base_url}/chats/${room}`,
         { content: message },
         {
           headers: {
@@ -209,8 +209,7 @@ export default function HomePage() {
                 backgroundImage: "url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGo0ZDRhbnIwaGRxdnB6aTVvbDhsbzV1Mnl4a3QybW9yNDJ2d2tmZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GRPy8MKag9U1U88hzY/giphy.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-              }}
-            ></div>
+              }}></div>
             <ul className="flex-1 overflow-y-auto">
               {roomchat.map((el) => (
                 <li key={el.id} className="p-2 hover:bg-gray-300 rounded cursor-pointer flex justify-between items-center">
@@ -233,14 +232,13 @@ export default function HomePage() {
           </aside>
 
           {/* Chat Area */}
-          <main className="flex flex-1 bg-white p-4 flex flex-col">
+          <main className="flex-1 bg-white p-4 flex flex-col">
             {/* Header dengan tombol Clear Chat */}
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">{room ? `Chat in Room: ${room}` : "No Room Selected"}</h2>
               <button
                 onClick={handleClear} // Clear semua pesan
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                 Clear Chat
               </button>
             </div>

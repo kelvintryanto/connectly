@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import socket from "..";
-export default function List() {
+export default function List({ base_url }) {
   const { roomchat, loading, error } = useSelector((state) => state.roomchat);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function List() {
   async function onJoin(id) {
     try {
       const { data } = await axios.post(
-        `http://localhost:3000/roomchat/join/${id}`,
+        `${base_url}/roomchat/join/${id}`,
         {},
         {
           headers: {

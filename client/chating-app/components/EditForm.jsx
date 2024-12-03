@@ -1,4 +1,4 @@
-export default function EditChat() {
+export default function EditChat({ base_url }) {
   return (
     <>
       <>
