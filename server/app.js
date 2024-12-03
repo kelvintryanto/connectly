@@ -11,21 +11,21 @@ const router = require("./routers");
 const { server } = require(`./index`);
 
 // io.on("connection", (socket) => {
-  io.emit(`ragagantenk`, `masuk event`);
-  // console.log(socket.id);
-  socket.on(`userData`, async (event) => {
-    console.log(event, `hehe`);
-    // console.log(socket.id, event);
-    // console.log(`aaaaaaaaaaaaaaaaaaaaaa`);
-    // console.log(event);
+//   io.emit(`ragagantenk`, `masuk event`);
+//   // console.log(socket.id);
+//   socket.on(`userData`, async (event) => {
+//     console.log(event, `hehe`);
+//     // console.log(socket.id, event);
+//     // console.log(`aaaaaaaaaaaaaaaaaaaaaa`);
+//     // console.log(event);
 
-    // await setSocketId(socket.id, event);
+//     // await setSocketId(socket.id, event);
 
-    // if (event) {
-    //   console.log(`masuk`);
-    // }
-  // });
-});
+//     // if (event) {
+//     //   console.log(`masuk`);
+//     // }
+//   });
+// });
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

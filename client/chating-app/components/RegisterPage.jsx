@@ -2,14 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
+import { mailOutline, lockClosedOutline, personOutline } from 'ionicons/icons';
+import { IonIcon } from '@ionic/react';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
-
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -39,59 +39,64 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="h-screen bg-gray-100 flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Register for Connectly</h2>
+    <div className="h-screen bg-gradient-to-r from-blue-200 via-cyan-200 to-teal-200 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white/30 backdrop-blur-md rounded-[2rem] shadow-lg p-8">
+        <div className="flex gap-8 mb-8">
+          <button 
+            onClick={() => navigate('/login')}
+            className="text-xl font-bold text-gray-400 hover:text-gray-700 pb-2 px-4"
+          >
+            Login
+          </button>
+          <button 
+            className="text-xl font-bold text-gray-700 border-b-2 border-cyan-400 pb-2 px-4"
+          >
+            Sign up
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-            <input
-              name="username"
-              type="text"
-              id="name"
-              placeholder="Enter your username"
-              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-            />
+            <div className="flex items-center bg-white/50 rounded-xl px-4">
+              <IonIcon icon={personOutline} className="w-6 h-6 text-gray-500" />
+              <input
+                name="username"
+                type="text"
+                placeholder="Enter your username"
+                className="w-full p-3 bg-transparent focus:outline-none"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-            <input
-              name="email"
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
+            <div className="flex items-center bg-white/50 rounded-xl px-4">
+              <IonIcon icon={mailOutline} className="w-6 h-6 text-gray-500" />
+              <input
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                className="w-full p-3 bg-transparent focus:outline-none"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              name="password"
-              type="password"
-              id="password"
-              placeholder="Create a password"
-              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
+          <div className="mb-6">
+            <div className="flex items-center bg-white/50 rounded-xl px-4">
+              <IonIcon icon={lockClosedOutline} className="w-6 h-6 text-gray-500" />
+              <input
+                name="password"
+                type="password"
+                placeholder="Create a password"
+                className="w-full p-3 bg-transparent focus:outline-none"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+
+          <button type="submit" className="w-full bg-cyan-400 text-white py-3 rounded-xl hover:bg-cyan-500">
             Register
           </button>
         </form>
-        <p className="mt-4 text-sm text-center text-gray-600">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
-            Login
-          </a>
-        </p>
       </div>
     </div>
   );
