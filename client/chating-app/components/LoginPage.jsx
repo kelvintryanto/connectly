@@ -2,8 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from 'ionicons/icons';
-import { IonIcon } from '@ionic/react';
+import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from "ionicons/icons";
+import { IonIcon } from "@ionic/react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -44,15 +44,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white/30 backdrop-blur-md rounded-[2rem] shadow-lg p-8">
         <div className="flex justify-between items-center mb-8">
           <div className="flex gap-8">
-            <button 
-              className="text-xl font-bold text-gray-700 border-b-2 border-pink-400 pb-2 px-4"
-            >
-              Login
-            </button>
-            <button 
-              onClick={() => navigate('/register')}
-              className="text-xl font-bold text-gray-400 hover:text-gray-700 pb-2 px-4"
-            >
+            <button className="text-xl font-bold text-gray-700 border-b-2 border-pink-400 pb-2 px-4">Login</button>
+            <button onClick={() => navigate("/register")} className="text-xl font-bold text-gray-400 hover:text-gray-700 pb-2 px-4">
               Sign up
             </button>
           </div>
@@ -69,25 +62,13 @@ export default function LoginPage() {
           <div className="mb-4">
             <div className="flex items-center bg-white/50 rounded-xl px-4">
               <IonIcon icon={mailOutline} className="w-6 h-6 text-gray-500" />
-              <input 
-                name="email" 
-                type="email" 
-                placeholder="Enter your email" 
-                className="w-full p-3 bg-transparent focus:outline-none"
-                onChange={(e) => setEmail(e.target.value)} 
-              />
+              <input name="email" type="email" placeholder="Enter your email" className="w-full p-3 bg-transparent focus:outline-none" onChange={(e) => setEmail(e.target.value)} />
             </div>
           </div>
           <div className="mb-6">
             <div className="flex items-center bg-white/50 rounded-xl px-4">
               <IonIcon icon={lockClosedOutline} className="w-6 h-6 text-gray-500" />
-              <input 
-                name="password" 
-                type="password" 
-                placeholder="Enter your password" 
-                className="w-full p-3 bg-transparent focus:outline-none"
-                onChange={(e) => setPassword(e.target.value)} 
-              />
+              <input name="password" type="password" placeholder="Enter your password" className="w-full p-3 bg-transparent focus:outline-none" onChange={(e) => setPassword(e.target.value)} />
             </div>
           </div>
 

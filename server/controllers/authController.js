@@ -66,6 +66,7 @@ class authController {
       next(err);
     }
   }
+
   static async googleLogin(req, res, next) {
     try {
       const { token } = req.headers;
@@ -104,6 +105,7 @@ class authController {
       next(err);
     }
   }
+
   static async userData(req, res, next) {
     try {
       const username = req.loginInfo.username;

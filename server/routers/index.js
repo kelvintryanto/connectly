@@ -1,10 +1,10 @@
 const express = require(`express`);
 const authController = require("../controllers/authController");
-const { errorHandler } = require("../config/middlewares/errorHandler");
 const roomChat = require(`../routers/roomChat`);
 const chat = require(`../routers/chat`);
 const { authentication } = require("../middleware/authentication");
 const authorization = require("../middleware/authorization");
+const errorHandler = require("../middleware/errorHandler");
 
 const router = express.Router();
 
