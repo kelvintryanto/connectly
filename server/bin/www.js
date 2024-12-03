@@ -5,6 +5,6 @@ if (process.env.NODE_env !== "production") {
 const app = require("../app");
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

@@ -13,10 +13,11 @@ export default function RegisterPage({ base_url }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      const data = await axios.post(`${base_url}/register`, { username, email, password });
 
-      console.log(data.data.name);
+    try {
+      const { data } = await axios.post(`${base_url}/register`, { username, email, password });
+
+      console.log(data.name);
 
       navigate(`/login`);
 
@@ -35,6 +36,21 @@ export default function RegisterPage({ base_url }) {
         onClick: function () {}, // Callback after click
       }).showToast();
     } catch (error) {
+      Toastify({
+        text: error.response.data.message,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "#AA0000",
+          color: "#FFF",
+          borderRadius: "10px",
+        },
+        onClick: function () {}, // Callback after click
+      }).showToast();
       console.log(error);
     }
   }
