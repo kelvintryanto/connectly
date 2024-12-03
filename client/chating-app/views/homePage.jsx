@@ -12,7 +12,9 @@ import {
     eyeOffOutline,
     archiveOutline,
     pinOutline,
-    exitOutline
+    exitOutline,
+    micOutline,
+    sendOutline
 } from 'ionicons/icons';
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -372,7 +374,7 @@ export default function HomePage() {
                                 type="text" 
                                 placeholder="Type a message..." 
                                 value={chatState.message} 
-                                className="flex-1 p-2 border border-blue-200 rounded-l focus:outline-none focus:ring focus:border-blue-400 bg-white/90" 
+                                className="flex-1 p-2 border border-blue-200 rounded-full focus:outline-none focus:ring focus:border-blue-400 bg-white/90" 
                                 onChange={(e) => {
                                     setChatState(prev => ({
                                         ...prev, 
@@ -381,10 +383,16 @@ export default function HomePage() {
                                 }} 
                             />
                             <button 
-                                type="submit" 
-                                className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 rounded-r hover:from-blue-500 hover:to-purple-600 transition duration-300"
+                                type="button" 
+                                className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300"
                             >
-                                Send
+                                <IonIcon icon={micOutline} className="text-white" />
+                            </button>
+                            <button 
+                                type="submit" 
+                                className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300"
+                            >
+                                <IonIcon icon={sendOutline} className="text-white" />
                             </button>
                         </motion.form>
                     </motion.div>
