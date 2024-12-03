@@ -1,15 +1,15 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Toastify from "toastify-js";
 
 export default function CreateChatRoom() {
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const navigate = useNavigate();
-
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -42,6 +42,14 @@ export default function CreateChatRoom() {
     }
   }
 
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+      setPreviewUrl(URL.createObjectURL(file)); // Membuat URL sementara untuk pratinjau
+    }
+  }
+
   async function handleUpload(file) {
     try {
       setFile(file);
@@ -56,7 +64,22 @@ export default function CreateChatRoom() {
     <>
       <div className="h-screen bg-gray-400 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Create Room Chat</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Create Room Chat</h2>
+          <div className="flex justify-center">
+            <div className="flex w-24 h-24 rounded-full bg-yellow-300 justify-center text-center items-center">
+              {previewUrl ? (
+                "test ada gambar"
+              ) : (
+                // Tampilkan ikon kamera dan tombol upload jika tidak ada gambar
+                <label htmlFor={`image`} className="flex items-center justify-center w-24 aspect-square bg-gray-200 rounded-full cursor-pointer">
+                  <div className="flex flex-col items-center text-center">
+                    <i className="fa-solid fa-camera text-gray-500 text-lg"></i>
+                    <span className="text-gray-500 text-sm">Upload Image</span>
+                  </div>
+                </label>
+              )}
+            </div>
+          </div>
           <form onSubmit={onSubmit}>
             <div className="mb-4">
               <label htmlFor="roomName" className="block text-gray-700 font-medium mb-2">
