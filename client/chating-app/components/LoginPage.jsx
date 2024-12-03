@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from 'ionicons/icons';
+import { IonIcon } from '@ionic/react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -38,34 +40,69 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="h-screen bg-gray-100 flex items-center justify-center">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Login to Connectly</h2>
+    <div className="h-screen bg-gradient-to-r from-rose-200 via-pink-200 to-violet-200 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white/30 backdrop-blur-md rounded-[2rem] shadow-lg p-8">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex gap-8">
+            <button 
+              className="text-xl font-bold text-gray-700 border-b-2 border-pink-400 pb-2 px-4"
+            >
+              Login
+            </button>
+            <button 
+              onClick={() => navigate('/register')}
+              className="text-xl font-bold text-gray-400 hover:text-gray-700 pb-2 px-4"
+            >
+              Sign up
+            </button>
+          </div>
+        </div>
+
+        {/* Logo & KORG Text */}
+        {/* <div className="flex justify-center mb-8 items-center">
+          <h1 className="text-2xl font-extrabold text-gray-700 ml-4">KORG</h1>
+          <IonIcon icon={laptopOutline} className="w-16 h-16 text-gray-700" />
+          <IonIcon icon={leafOutline} className="w-8 h-8 text-gray-700" />
+        </div> */}
+
         <form onSubmit={onSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <input name="email" type="email" id="email" placeholder="Enter your email" className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300" onChange={(e) => setEmail(e.target.value)} />
+            <div className="flex items-center bg-white/50 rounded-xl px-4">
+              <IonIcon icon={mailOutline} className="w-6 h-6 text-gray-500" />
+              <input 
+                name="email" 
+                type="email" 
+                placeholder="Enter your email" 
+                className="w-full p-3 bg-transparent focus:outline-none"
+                onChange={(e) => setEmail(e.target.value)} 
+              />
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input name="password" type="password" id="password" placeholder="Enter your password" className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300" onChange={(e) => setPassword(e.target.value)} />
+          <div className="mb-6">
+            <div className="flex items-center bg-white/50 rounded-xl px-4">
+              <IonIcon icon={lockClosedOutline} className="w-6 h-6 text-gray-500" />
+              <input 
+                name="password" 
+                type="password" 
+                placeholder="Enter your password" 
+                className="w-full p-3 bg-transparent focus:outline-none"
+                onChange={(e) => setPassword(e.target.value)} 
+              />
+            </div>
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+
+          <div className="flex justify-between items-center mb-6">
+            <a href="#" className="text-sm text-gray-600 hover:text-gray-800">
+              Forgot your password?
+            </a>
+          </div>
+
+          <button type="submit" className="w-full bg-pink-400 text-white py-3 rounded-xl hover:bg-pink-500">
             Login
           </button>
         </form>
-        <p className="mt-4 text-sm text-center text-gray-600">
-          Don't have an account?{" "}
-          <a href="/register" className="text-blue-500 hover:underline">
-            Register
-          </a>
-        </p>
 
-        <div className="divider px-10 flex justify-center">OR</div>
+        <div className="divider px-10 flex justify-center mt-6">OR</div>
         <div className="mt-6 flex justify-center items-center">
           <GoogleLogin onSuccess={googleLogin} />
         </div>

@@ -2,10 +2,15 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+
 export default function CreateChatRoom() {
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
+
   const navigate = useNavigate();
+
+
   async function onSubmit(e) {
     e.preventDefault();
     try {
@@ -49,8 +54,6 @@ export default function CreateChatRoom() {
 
   return (
     <>
-      
-
       <div className="h-screen bg-gray-400 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Create Room Chat</h2>

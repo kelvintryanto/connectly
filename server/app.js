@@ -14,12 +14,12 @@ const { server } = require(`./index`);
 //   io.emit(`ragagantenk`, `masuk event`);
 //   // console.log(socket.id);
 //   socket.on(`userData`, async (event) => {
-//     // console.log(event, `hehe`);
+//     console.log(event, `hehe`);
 //     // console.log(socket.id, event);
 //     // console.log(`aaaaaaaaaaaaaaaaaaaaaa`);
 //     // console.log(event);
 
-//     await setSocketId(socket.id, event);
+//     // await setSocketId(socket.id, event);
 
 //     // if (event) {
 //     //   console.log(`masuk`);
