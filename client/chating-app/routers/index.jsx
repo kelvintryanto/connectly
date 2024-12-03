@@ -11,6 +11,7 @@ import { redirect } from "react-router-dom";
 import EditChat from "../components/EditForm";
 
 const base_url = "https://server.ragaram.site";
+// const base_url = "https://localhost:3000";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <LoginPage base_url={base_url} />,
     loader: () => {
       if (localStorage.access_token) {
         Toastify({

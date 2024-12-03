@@ -12,6 +12,7 @@ export default function LoginPage({ base_url }) {
 
   async function onSubmit(e) {
     e.preventDefault();
+    console.log(base_url);
     try {
       const { data } = await axios.post(`${base_url}/login`, { email, password });
       // console.log(data.access_token);
