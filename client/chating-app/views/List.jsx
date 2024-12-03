@@ -1,13 +1,12 @@
-import Navbar from "../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAsync } from "../src/features/roomchat/roomchatSlice";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import Toastify from "toastify-js";
 import Swal from 'sweetalert2'
 import { motion } from "framer-motion";
+import { cardVariants, containerVariants, loadingVariants } from "../constants/animationVariants";
 
 export default function List() {
   const { roomchat, loading, error } = useSelector((state) => state.roomchat);
@@ -76,40 +75,6 @@ export default function List() {
         }
     }
   }
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            delay: i * 0.1,
-        },
-    }),
-};
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.3
-        }
-    }
-  };
-
-  const loadingVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: { 
-        scale: 1, 
-        opacity: 1,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut"
-        }
-    }
-  };
 
   if (loading) {
     return (
