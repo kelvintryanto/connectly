@@ -13,7 +13,6 @@ export default function RegisterPage({ base_url }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(base_url);
     try {
       const { data } = await axios.post(`${base_url}/register`, { username, email, password });
       console.log(data);
