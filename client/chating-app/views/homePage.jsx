@@ -27,6 +27,7 @@ export default function HomePage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
+  const [activeRoom, setActiveRoom] = useState(null);
   const navigate = useNavigate();
 
   const fetchUser = async () => {
@@ -101,6 +102,7 @@ export default function HomePage() {
         chat: data.data.Chats,
         ai: data.ai
       }));
+      setActiveRoom(roomId);
     } catch (error) {
       console.log(error);
     }
@@ -227,8 +229,9 @@ export default function HomePage() {
               {chatState.roomchat.map((el) => (
                 <li 
                   key={el.id} 
-                  className="group relative p-2 hover:bg-gray-300 rounded flex justify-between items-center transition duration-300"
-                  onClick={() => handleRoomClick(el.id)}
+                  className={`group relative p-2 hover:bg-gray-300 rounded flex justify-between items-center transition duration-300 cursor-pointer
+                    ${activeRoom === el.id ? 'bg-blue-200' : ''}`}
+                  onClick={() => handleDetailClick(el.id)}
                 >
                   <div className="flex items-center flex-1">
                     <img src={el.image} alt="Profile" className="w-10 h-10 rounded-full flex-shrink-0 object-cover shadow-md" />
