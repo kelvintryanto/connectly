@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Toastify from "toastify-js";
+import Swal from 'sweetalert2'
+
 export default function List() {
   const { roomchat, loading, error } = useSelector((state) => state.roomchat);
   const dispatch = useDispatch();
@@ -18,32 +20,57 @@ export default function List() {
 
   async function onJoin(id) {
     try {
-      const { data } = await axios.post(
-        `https://server.ragaram.site/roomchat/join/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.access_token}`,
-          },
+        const result = await Swal.fire({
+            title: 'Join Room?',
+            text: "Are you sure you want to join this room?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#8B5CF6',
+            cancelButtonColor: '#EF4444',
+            confirmButtonText: 'Yes, join!',
+            cancelButtonText: 'No, cancel',
+            background: '#F3F4F6',
+            color: '#1F2937',
+        })
+
+        if (result.isConfirmed) {
+            const { data } = await axios.post(
+                `https://server.ragaram.site/roomchat/join/${id}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.access_token}`,
+                    },
+                }
+            );
+            
+            Swal.fire({
+                title: 'Joined Successfully!',
+                text: 'You have entered the room.',
+                icon: 'success',
+                confirmButtonColor: '#8B5CF6',
+                background: '#F3F4F6',
+                color: '#1F2937',
+            })
+            
+            navigate(`/`);
         }
-      );
-      navigate(`/`);
     } catch (error) {
-      console.log(error);
-      Toastify({
-        text: error.response.data.message,
-        duration: 3000,
-        newWindow: true,
-        close: true,
-        gravity: "bottom", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-          background: "#34D399",
-          color: "#000000",
-        },
-        onClick: function () {}, // Callback after click
-      }).showToast();
+        console.log(error);
+        Toastify({
+            text: error.response.data.message,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "bottom", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#34D399",
+                color: "#000000",
+            },
+            onClick: function () {}, // Callback after click
+        }).showToast();
     }
   }
 
