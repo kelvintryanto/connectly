@@ -28,7 +28,7 @@ export default function LoginPage({ base_url }) {
       // console.log(codeResponse);
       // console.log(`masuk sini`);
 
-      const { data } = await axios.post(`https://server.ragaram.site/google-login`, null, {
+      const { data } = await axios.post(`http://localhost:3000/google-login`, null, {
         headers: {
           token: codeResponse.credential,
         },

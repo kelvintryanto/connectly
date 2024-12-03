@@ -44,6 +44,7 @@ const errorHandler = (err, req, res, next) => {
     status = 401;
     message = `Please login first`;
   }
+
   res.status(status).json({
     message,
   });

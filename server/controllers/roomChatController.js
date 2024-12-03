@@ -54,21 +54,21 @@ class roomChatController {
     }
   }
 
-  // static async delete(req, res, next) {
-  //   try {
-  //     const { id } = req.params;
-  //     const roomchat = await RoomChat.findByPk(id);
+  static async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+      const roomchat = await RoomChat.findByPk(id);
 
-  //     if (!roomchat) throw { name: `NotFound` };
-  //     await roomchat.destroy();
+      if (!roomchat) throw { name: `NotFound` };
+      await roomchat.destroy();
 
-  //     res.status(200).json({
-  //       message: `Success delete room chat with room id :${id}`,
-  //     });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+      res.status(200).json({
+        message: `Success delete room chat with room id :${id}`,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 
   static async read(req, res, next) {
     try {
@@ -164,7 +164,7 @@ class roomChatController {
         data,
       });
     } catch (err) {
-      // console.log(err);
+      console.log(err);
 
       next(err);
     }

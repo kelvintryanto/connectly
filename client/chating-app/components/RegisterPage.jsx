@@ -15,8 +15,8 @@ export default function RegisterPage({ base_url }) {
     e.preventDefault();
     try {
       const { data } = await axios.post(`${base_url}/register`, { username, email, password });
-      console.log(data);
-      console.log(data.name);
+      // console.log(data);
+      // console.log(data.name);
 
       navigate(`/login`);
 

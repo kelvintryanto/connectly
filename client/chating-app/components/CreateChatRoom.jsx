@@ -2,9 +2,10 @@ import { useState } from "react";
 // import Navbar from "./Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import socket from "..";
 import Toastify from "toastify-js";
 
-export default function CreateChatRoom() {
+export default function CreateChatRoom({ base_url }) {
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -15,30 +16,45 @@ export default function CreateChatRoom() {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("name", name); // Tambahkan nama ke FormData
-      formData.append("image", file); // file juga ditambahkan ke form data
-      await axios.post(`https://server.ragaram.site/roomchat`, formData, {
+      formData.append("name", name);
+      if (file) {
+        formData.append("image", file);
+      }
+
+      const { data } = await axios.post(`${base_url}/roomchat`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
+          "Content-Type": "multipart/form-data",
         },
       });
-      navigate(`/`);
+      // console.log(data);
+      const room = data.roomchat.id;
+      socket.emit("create", room);
+
       Toastify({
-        text: `Success Create new Room Enjoy!`,
+        text: `Sukses bikin room baru nih! 🎉`,
         duration: 3000,
-        newWindow: true,
-        close: true,
-        gravity: "bottom", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
+        gravity: "bottom",
+        position: "right",
         style: {
           background: "#34D399",
           color: "#000000",
         },
-        onClick: function () {}, // Callback after click
       }).showToast();
+
+      navigate(`/`);
     } catch (error) {
       console.log(error);
+      Toastify({
+        text: error.response?.data?.message || "Gagal bikin room 😢",
+        duration: 3000,
+        gravity: "bottom",
+        position: "right",
+        style: {
+          background: "#F87171",
+          color: "#000000",
+        },
+      }).showToast();
     }
   }
 
@@ -53,18 +69,16 @@ export default function CreateChatRoom() {
   async function handleUpload(file) {
     try {
       setFile(file);
-
-      // console.log(formData);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <>
-      <div className="h-screen bg-gray-400 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Create Room Chat</h2>
+    <div className="min-h-screen bg-gradient-to-r from-rose-100 to-teal-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-gray-100">
+        <div className="p-8">
+          <h2 className="text-2xl font-bold text-gray-700 mb-6 text-center">Create New Room</h2>
           <div className="flex justify-center">
             <div className="relative flex w-24 h-24 rounded-full justify-center text-center items-center overflow-hidden">
               {previewUrl ? (
@@ -86,42 +100,37 @@ export default function CreateChatRoom() {
               )}
             </div>
           </div>
-          <form onSubmit={onSubmit}>
-            <div className="mb-4">
-              <label htmlFor="roomName" className="block text-gray-700 font-medium mb-2">
-                Room Name
-              </label>
-              <input
-                type="text"
-                id="roomName"
-                name="roomName"
-                placeholder="Enter room name"
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
+          <form onSubmit={onSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Room Name</label>
+              <input type="text" required placeholder="Enter room name" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:border-violet-300 transition duration-200" />
             </div>
-            <div className="mb-4">
-              <input type="file" id={`upload`} className="hidden" onChange={handleFileChange} />
-              {/* <label className="block text-gray-700 font-medium mb-2">Upload Image</label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                onChange={(e) => {
-                  handleUpload(e.target.files[0]);
-                }} 
-              />*/}
-            </div>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full">
+
+            {/* <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Room Image</label>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-200 border-dashed rounded-lg hover:border-violet-300 transition duration-200">
+                <div className="space-y-1 text-center">
+                  <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <div className="flex text-sm text-gray-600">
+                    <label className="relative cursor-pointer bg-white rounded-md font-medium text-violet-600 hover:text-violet-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-violet-500">
+                      <span>Upload a file</span>
+                      <input type="file" className="sr-only" accept="image/*" onChange={(e) => handleUpload(e.target.files[0])} />
+                    </label>
+                  </div>
+                  {file && <p className="text-sm text-gray-500">Selected: {file.name}</p>}
+                </div>
+              </div>
+            </div> */}
+            <input type="file" id={`upload`} className="hidden" onChange={handleFileChange} />
+
+            <button type="submit" className="w-full px-4 py-3 bg-violet-100 text-violet-600 rounded-lg hover:bg-violet-200 transition duration-300">
               Create Room
             </button>
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
