@@ -103,7 +103,7 @@ export default function CreateChatRoom({ base_url }) {
           <form onSubmit={onSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Room Name</label>
-              <input type="text" required placeholder="Enter room name" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:border-violet-300 transition duration-200" />
+              <input type="text" required placeholder="Enter room name" className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:outline-none focus:border-violet-300 transition duration-200" onChange={(e) => setName(e.target.value)} />
             </div>
 
             {/* <div>
