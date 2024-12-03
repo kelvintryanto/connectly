@@ -4,6 +4,7 @@ const authentication = async (req, res, next) => {
   try {
     // console.log(req.headers.authorization);
     const { authorization } = req.headers;
+
     if (!authorization) throw { name: "Unauthorized" };
     const access_token = authorization.split(" ")[1];
 
@@ -23,7 +24,7 @@ const authentication = async (req, res, next) => {
 
     next();
   } catch (err) {
-    // console.log(err);
+    console.log(err);
 
     next(err);
   }

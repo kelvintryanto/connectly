@@ -10,7 +10,7 @@ export default function LoginPage() {
   async function onSubmit(e) {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`https://server.ragaram.site/login`, { email, password });
+      const { data } = await axios.post(`http://localhost:3000/login`, { email, password });
       // console.log(data.access_token);
 
       localStorage.setItem(`access_token`, data.access_token);
@@ -25,7 +25,7 @@ export default function LoginPage() {
       // console.log(codeResponse);
       // console.log(`masuk sini`);
 
-      const { data } = await axios.post(`https://server.ragaram.site/google-login`, null, {
+      const { data } = await axios.post(`http://localhost:3000/google-login`, null, {
         headers: {
           token: codeResponse.credential,
         },

@@ -2,6 +2,8 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import socket from "..";
+
 export default function CreateChatRoom() {
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
@@ -12,11 +14,14 @@ export default function CreateChatRoom() {
       const formData = new FormData();
       formData.append("name", name); // Tambahkan nama ke FormData
       formData.append("image", file); // file juga ditambahkan ke form data
-      await axios.post(`https://server.ragaram.site/roomchat`, formData, {
+      const { data } = await axios.post(`http://localhost:3000/roomchat`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
+      // console.log(data);
+      const room = data.roomchat.id;
+      socket.emit("create", room);
       navigate(`/`);
       Toastify({
         text: `Success Create new Room Enjoy!`,
@@ -49,8 +54,6 @@ export default function CreateChatRoom() {
 
   return (
     <>
-      
-
       <div className="h-screen bg-gray-400 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Create Room Chat</h2>

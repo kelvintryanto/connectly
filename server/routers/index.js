@@ -1,6 +1,6 @@
 const express = require(`express`);
 const authController = require("../controllers/authController");
-const { errorHandler } = require("../config/middlewares/errorHandler");
+const { errorHandler } = require(`../middleware/errorHandler`);
 const roomChat = require(`../routers/roomChat`);
 const chat = require(`../routers/chat`);
 const { authentication } = require("../middleware/authentication");

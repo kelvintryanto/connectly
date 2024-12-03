@@ -164,7 +164,7 @@ class roomChatController {
         data,
       });
     } catch (err) {
-      // console.log(err);
+      console.log(err);
 
       next(err);
     }

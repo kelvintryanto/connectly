@@ -4,8 +4,8 @@ import { fetchAsync } from "../src/features/roomchat/roomchatSlice";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import Toastify from "toastify-js";
+import socket from "..";
 export default function List() {
   const { roomchat, loading, error } = useSelector((state) => state.roomchat);
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export default function List() {
   async function onJoin(id) {
     try {
       const { data } = await axios.post(
-        `https://server.ragaram.site/roomchat/join/${id}`,
+        `http://localhost:3000/roomchat/join/${id}`,
         {},
         {
           headers: {
@@ -27,6 +27,11 @@ export default function List() {
           },
         }
       );
+      // console.log(data.data.roomChatId);
+      const room = `room${data.data.roomChatId}`;
+      // console.log(room);
+      socket.emit("join_room", room);
+
       navigate(`/`);
     } catch (error) {
       console.log(error);
@@ -58,8 +63,6 @@ export default function List() {
   }
   return (
     <>
-      
-
       <div className="container mx-auto p-4">
         <div className="flex flex-wrap -mx-4">
           {/* Card 1 */}

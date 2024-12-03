@@ -10,7 +10,7 @@ export default function RegisterPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const data = await axios.post(`https://server.ragaram.site/register`, { username, email, password });
+      const data = await axios.post(`http://localhost:3000/register`, { username, email, password });
 
       // console.log(data.data.name);
 

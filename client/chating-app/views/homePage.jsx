@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import Toastify from "toastify-js";
+import socket from "..";
 export default function HomePage() {
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -18,7 +19,7 @@ export default function HomePage() {
   async function fetchroomchat() {
     try {
       setIsLoading(true);
-      const { data } = await axios.get("https://server.ragaram.site/roomchat", {
+      const { data } = await axios.get("http://localhost:3000/roomchat", {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -36,7 +37,7 @@ export default function HomePage() {
 
   async function fetchuser() {
     try {
-      const data = await axios.get("https://server.ragaram.site/find", {
+      const data = await axios.get("http://localhost:3000/find", {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -54,32 +55,52 @@ export default function HomePage() {
   useEffect(() => {
     if (email) {
       fetchuser();
-      const socket = io.connect("https://server.ragaram.site");
 
-      socket.on("connect", () => {
-        socket.emit("userData", email);
-        socket.on("ragagantenk", (event) => {
-          // console.log(event, "<< event");
-        });
-        socket.on("ChatUpdate", (event) => {
-          setChat((prev) => [...prev, event]);
-          setMessage("");
-        });
+      // console.log(socket);
+      socket.connect();
+
+      socket.emit("userData", email);
+      socket.on("ragagantenk", (event) => {
+        // console.log(event, "<< event");
       });
 
-      return () => socket.disconnect();
+      socket.on("ChatUpdate", (event) => {
+        setChat((prev) => [...prev, event]);
+        setMessage("");
+      });
+
+      // socket.emit("userData", { username: "test_user" });
+
+      return () => {
+        socket.off("userData");
+        socket.off("ChatUpdate");
+        socket.disconnect();
+      };
     }
   }, [email]);
 
   async function handleDetailClick(roomId) {
     try {
-      const { data } = await axios.get(`https://server.ragaram.site/roomchat/${roomId}`, {
+      // Leave the previous room if it exists
+      if (room) { //udah diperanh dipencet open
+        socket.emit("leave_room", `room${room}`);
+        console.log(`Left room: room${room}`);
+      }
+
+      // Fetch the chat data for the new room
+      const { data } = await axios.get(`http://localhost:3000/roomchat/${roomId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
+
+      // Update room state and join the new room
       setRoom(roomId);
       setChat(data.data.Chats);
+      socket.emit("join_room", `room${roomId}`);
+      console.log(`Joined room: room${roomId}`);
+
+      // Optional: Add AI message or other actions for the new room
       setChat((prev) => [...prev, { id: Date.now(), sender: "🤖", content: data.ai }]);
       setAi("");
     } catch (error) {
@@ -88,7 +109,7 @@ export default function HomePage() {
   }
 
   async function fetchChat() {
-    const { data } = await axios.get(`https://server.ragaram.site/roomchat/${room}`, {
+    const { data } = await axios.get(`http://localhost:3000/roomchat/${room}`, {
       headers: {
         Authorization: `Bearer ${localStorage.access_token}`,
       },
@@ -98,7 +119,7 @@ export default function HomePage() {
   }
   async function handleClear() {
     try {
-      const { data } = await axios.delete(`https://server.ragaram.site/clear/${room}`, {
+      const { data } = await axios.delete(`http://localhost:3000/clear/${room}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -124,7 +145,7 @@ export default function HomePage() {
   }
   async function handleLeave(roomId) {
     try {
-      const { data } = await axios.delete(`https://server.ragaram.site/roomchat/leave/${roomId}`, {
+      const { data } = await axios.delete(`http://localhost:3000/roomchat/leave/${roomId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -132,7 +153,7 @@ export default function HomePage() {
       fetchroomchat();
 
       Toastify({
-        text: error.response.data.message,
+        text: `Success Leave Chat`,
         duration: 3000,
         newWindow: true,
         close: true,
@@ -154,7 +175,7 @@ export default function HomePage() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://server.ragaram.site/chats/${room}`,
+        `http://localhost:3000/chats/${room}`,
         { content: message },
         {
           headers: {
