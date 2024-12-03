@@ -5,14 +5,15 @@ import { GoogleLogin } from "@react-oauth/google";
 import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 
-export default function LoginPage() {
+export default function LoginPage({ base_url }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   async function onSubmit(e) {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`https://server.ragaram.site/login`, { email, password });
+      const { data } = await axios.post(`${base_url}/login`, { email, password });
       // console.log(data.access_token);
 
       localStorage.setItem(`access_token`, data.access_token);

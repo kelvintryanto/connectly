@@ -9,10 +9,13 @@ import Toastify from "toastify-js";
 import BaseLayout from "../views/BaseLayout";
 import { redirect } from "react-router-dom";
 import EditChat from "../components/EditForm";
+
+const base_url = "http://localhost:3000
+";
 const router = createBrowserRouter([
   {
     path: "/register",
-    element: <RegisterPage />,
+    element: <RegisterPage base_url={base_url} />,
   },
   {
     path: "/login",
@@ -67,19 +70,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: <HomePage base_url={base_url} />,
       },
       {
         path: "/list",
-        element: <List />,
+        element: <List base_url={base_url} />,
       },
       {
         path: "/createroom",
-        element: <CreateChatRoom />,
+        element: <CreateChatRoom base_url={base_url} />,
       },
       {
         path: "/edit",
-        element: <EditChat />,
+        element: <EditChat base_url={base_url} />,
       },
     ],
   },
