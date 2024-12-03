@@ -2,11 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
+
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+
   async function handleSubmit(e) {
     e.preventDefault();
     try {
