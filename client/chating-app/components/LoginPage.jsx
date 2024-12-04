@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
+import GithubLoginButton from "./GithubLoginButton";
 
 export default function LoginPage({ base_url }) {
   const [email, setEmail] = useState("");
@@ -85,8 +86,14 @@ export default function LoginPage({ base_url }) {
         </form>
 
         <div className="divider px-10 flex justify-center mt-6">OR</div>
-        <div className="mt-6 flex justify-center items-center">
-          <GoogleLogin onSuccess={googleLogin} />
+
+        <div className="flex mt-3 justify-around">
+          <div className="flex justify-center items-center">
+            <GoogleLogin onSuccess={googleLogin} />
+          </div>
+          <div className="flex justify-center items-center">
+            <GithubLoginButton />
+          </div>
         </div>
       </div>
     </div>
