@@ -29,18 +29,18 @@ export default function HomePage({ base_url }) {
   const [activeRoom, setActiveRoom] = useState(null);
   const navigate = useNavigate();
 
-  const fetchUser = async () => {
-    try {
-      const { data } = await axios.get("https://server.ragaram.site/find", {
-        headers: {
-          Authorization: `Bearer ${localStorage.access_token}`,
-        },
-      });
-      setChatState((prev) => ({ ...prev, user: data.username }));
-    } catch (error) {
-      console.error("Error fetching user:", error);
-    }
-  };
+  // const fetchUser = async () => {
+  //   try {
+  //     const { data } = await axios.get("https://server.ragaram.site/find", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.access_token}`,
+  //       },
+  //     });
+  //     setChatState((prev) => ({ ...prev, user: data.username }));
+  //   } catch (error) {
+  //     console.error("Error fetching user:", error);
+  //   }
+  // };
 
   const fetchRoomChat = async () => {
     try {
@@ -81,33 +81,31 @@ export default function HomePage({ base_url }) {
   }, []);
 
   useEffect(() => {
-    if (chatState.email || email) {
-      fetchuser();
+    fetchuser();
 
-      // console.log(socket);
-      socket.connect();
+    // console.log(socket);
+    socket.connect();
 
-      socket.emit("userData", email);
-      socket.on("ragagantenk", (event) => {
-        // console.log(event, "<< event");
-      });
+    socket.emit("userData", email);
+    // socket.on("ragagantenk", (event) => {
+    //   // console.log(event, "<< event");
+    // });
 
-      socket.on("ChatUpdate", (event) => {
-        setChatState((prev) => ({
-          ...prev,
-          chat: [...prev.chat, event],
-          message: "",
-        }));
-      });
+    socket.on("ChatUpdate", (event) => {
+      setChatState((prev) => ({
+        ...prev,
+        chat: [...prev.chat, event],
+        message: "",
+      }));
+    });
 
-      // socket.emit("userData", { username: "test_user" });
+    // socket.emit("userData", { username: "test_user" });
 
-      return () => {
-        socket.off("userData");
-        socket.off("ChatUpdate");
-        socket.disconnect();
-      };
-    }
+    return () => {
+      socket.off("userData");
+      socket.off("ChatUpdate");
+      socket.disconnect();
+    };
   }, [chatState.email]);
 
   async function handleDetailClick(roomId) {
@@ -261,8 +259,7 @@ export default function HomePage({ base_url }) {
                 backgroundImage: "url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGo0ZDRhbnIwaGRxdnB6aTVvbDhsbzV1Mnl4a3QybW9yNDJ2d2tmZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GRPy8MKag9U1U88hzY/giphy.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-              }}
-            ></div>
+              }}></div>
             <ul className="flex-1 overflow-y-auto">
               <AnimatePresence>
                 {chatState.roomchat.map((el) => (
@@ -274,8 +271,7 @@ export default function HomePage({ base_url }) {
                     whileHover={{ scale: 1.02 }}
                     className={`group relative p-2 hover:bg-gray-300 rounded flex justify-between items-center transition duration-300 cursor-pointer
                                         ${activeRoom === el.id ? "bg-blue-200" : ""}`}
-                    onClick={() => handleDetailClick(el.id)}
-                  >
+                    onClick={() => handleDetailClick(el.id)}>
                     <div className="flex items-center flex-1">
                       <img src={el.image} alt="Profile" className="w-10 h-10 rounded-full flex-shrink-0 object-cover shadow-md" />
                       <div className="ml-3">
@@ -296,8 +292,7 @@ export default function HomePage({ base_url }) {
                             handleClear();
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                        >
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
                           <IonIcon icon={trashBinOutline} />
                           Clear Chat
                         </button>
@@ -324,8 +319,7 @@ export default function HomePage({ base_url }) {
                             handleLeave(el.id);
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
-                        >
+                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2">
                           <IonIcon icon={exitOutline} />
                           Leave Room
                         </button>

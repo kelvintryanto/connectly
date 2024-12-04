@@ -49,7 +49,7 @@ export default function List({ base_url }) {
 
       if (result.isConfirmed) {
         const { data } = await axios.post(
-          `https://server.ragaram.site/roomchat/join/${id}`,
+          `${base_url}/roomchat/join/${id}`,
           {},
           {
             headers: {
