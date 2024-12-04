@@ -38,14 +38,6 @@ export default function LoginPage({ base_url }) {
     }
   }
 
-  async function githubLogin(codeResponse) {
-    try {
-      const { code } = useParams();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <div className="h-screen bg-gradient-to-r from-rose-200 via-pink-200 to-violet-200 flex items-center justify-center">
       <div className="w-full max-w-md bg-white/30 backdrop-blur-md rounded-[2rem] shadow-lg p-8">

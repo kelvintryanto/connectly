@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function GithubLoginButton({ base_url }) {
-  // jika tombol sign in with github ditekan maka gunakan useEffect
-  const [accessToken, setAccessToken] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleGithubLogin() {
     // ini bisa ditaruh di env pakai dotenv
@@ -33,12 +34,6 @@ export default function GithubLoginButton({ base_url }) {
             const response = await getGithubAccessToken(authorizationGithubCode);
 
             console.log("Access Token:", response);
-
-            // Simpan access_token di localStorage (opsional)
-            // if (access_token) {
-            //   localStorage.setItem("github_access_token", access_token);
-            //   localStorage.removeItem("isGithubLogin"); // Hapus status login
-            // }
           } catch (error) {
             console.error("Error fetching access token:", error);
           }
@@ -51,14 +46,21 @@ export default function GithubLoginButton({ base_url }) {
 
   async function getGithubAccessToken(authorizationGithubCode) {
     try {
+      setLoading(true);
       // karena masalah cors, pengambilan accesstoken dari front end tidak bisa dilakukan
       // lempar authrizationGithubCode ini ke back end lalu kembalikan access token yang digunakan dalam web untuk dimasukkan ke dalam localstorage accesstoken
       // console.log("masuk getGithubAccessToken: ", authorizationGithubCode);
       const { data } = await axios.post(`${base_url}/github-login`, { code: authorizationGithubCode });
-      console.log(data);
+      if (data?.access_token) {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.removeItem("isGithubLogin");
+      }
+      navigate("/");
       return data;
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -66,7 +68,15 @@ export default function GithubLoginButton({ base_url }) {
     <>
       <button className="btn bg-white py-2 px-3 border border-slate-300 rounded-md btn-outline text-sm" onClick={handleGithubLogin}>
         {/* nanti tambahkan state yang isinya generate token, supaya mencegah csrf (cross-site request forgery) > security concern, setelah itu akan disimpan statenya ke localStorage */}
-        <i className="fab fa-github mr-1"></i> Sign in with GitHub
+        {loading ? (
+          <>
+            <span className="loading loading-spinner"></span> Loading
+          </>
+        ) : (
+          <>
+            <i className="fab fa-github mr-1"></i> Sign in with GitHub
+          </>
+        )}
       </button>
     </>
   );
