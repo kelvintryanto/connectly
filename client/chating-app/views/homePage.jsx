@@ -42,7 +42,7 @@ export default function HomePage({ base_url }) {
 
   const fetchUser = async () => {
     try {
-      const { data } = await axios.get("https://server.ragaram.site/find", {
+      const { data } = await axios.get(`${base_url}/find`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
