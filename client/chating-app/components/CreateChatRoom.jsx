@@ -27,6 +27,7 @@ export default function CreateChatRoom({ base_url }) {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(data);
       // console.log(data);
       const room = data.roomchat.id;
       socket.emit("create", room);
@@ -63,14 +64,6 @@ export default function CreateChatRoom({ base_url }) {
     if (file) {
       setFile(file);
       setPreviewUrl(URL.createObjectURL(file)); // Membuat URL sementara untuk pratinjau
-    }
-  }
-
-  async function handleUpload(file) {
-    try {
-      setFile(file);
-    } catch (error) {
-      console.log(error);
     }
   }
 
