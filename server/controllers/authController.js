@@ -1,6 +1,6 @@
 const { compareBcrypt } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
-const { User, RoomChat, Chat, user_roomchat, room_masteruser } = require(`../models`);
+const { User, RoomChat, Chat, user_roomchat } = require(`../models`);
 const { OAuth2Client } = require("google-auth-library");
 const axios = require("axios");
 class authController {
@@ -110,6 +110,7 @@ class authController {
   static async githubLogin(req, res, next) {
     try {
       console.log("masuk github login di console server");
+      console.log(req);
       const { code } = req.query;
 
       const { data } = await axios({
@@ -126,7 +127,6 @@ class authController {
         },
       });
 
-      console.log("=======", data, "=======");
       // kirim responsenya
       res.status(200).send(data);
     } catch (error) {
@@ -150,10 +150,6 @@ class authController {
   static async clear(req, res, next) {
     try {
       const { id } = req.params;
-
-      const roommaster = await room_masteruser.findOne({ where: { userId: req.loginInfo.userId, roomChatId: id } });
-
-      if (!roommaster) throw { name: `Forbidden` };
       await Chat.destroy({ where: { RoomChatId: id } });
 
       res.status(200).json({
