@@ -109,17 +109,15 @@ class authController {
 
   static async githubLogin(req, res, next) {
     try {
-      console.log("masuk github login di console server");
-      console.log(req);
-      const { code } = req.query;
-
-      const { data } = await axios({
+      const { code } = req.body;
+      // ambil access_token dari github
+      const getAccessToken = await axios({
         method: "post",
         url: "https://github.com/login/oauth/access_token",
         params: {
           client_id: "Ov23li5Y5CTVE0X7rGmr",
           client_secret: "c35afe64b74f2fb4ed07383634c0d113c517bb63",
-          code: code,
+          code,
           redirect_uri: "http://localhost:5173/login",
         },
         headers: {
@@ -127,8 +125,52 @@ class authController {
         },
       });
 
-      // kirim responsenya
-      res.status(200).send(data);
+      const githubAccessToken = getAccessToken.data.access_token;
+      console.log("githubAccessToken: ", githubAccessToken, 129);
+
+      // ambil emailnya untuk keperluan cari
+      const emailResponse = await axios.get("https://api.github.com/user/emails", {
+        headers: {
+          Authorization: `token ${githubAccessToken}`,
+        },
+      });
+      // ambil emailnya untuk keperluan cari
+      const userResponse = await axios.get("https://api.github.com/user", {
+        headers: {
+          Authorization: `token ${githubAccessToken}`,
+        },
+      });
+
+      // ambil email dan userdata
+      const githubEmail = emailResponse.data[0].email;
+      const userData = userResponse.data;
+      console.log(githubEmail, userData, "<<<<<<<<<<<<<<<<<<<<<<=====================ini datanya cuy");
+
+      // buat usernya kalau tidak ada yang terdaftar berdasarkan email
+      // kalau ada ambil datanya
+      // const [user, created] = await User.findOrCreate({
+      //   where: {
+      //     email: githubEmail,
+      //   },
+      //   defaults: {
+      //     username: userData.login,
+      //     email: githubEmail,
+      //     password: "password_github",
+      //   },
+      //   hooks: false,
+      // });
+
+      // bikin access_token dari application connectly
+      // const access_token = signToken({
+      //   userId: user.id,
+      //   username: user.username,
+      //   email: user.username,
+      //   socket: user.socket,
+      // });
+      // console.log(access_token);
+
+      // kirim access token dari web application connectly
+      // res.status(200).json({ access_token });
     } catch (error) {
       console.log(error);
       next(error);

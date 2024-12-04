@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
@@ -26,16 +26,21 @@ export default function LoginPage({ base_url }) {
 
   async function googleLogin(codeResponse) {
     try {
-      // console.log(codeResponse);
-      // console.log(`masuk sini`);
-
-      const { data } = await axios.post(`http://localhost:3000/google-login`, null, {
+      const { data } = await axios.post(`${base_url}/google-login`, null, {
         headers: {
           token: codeResponse.credential,
         },
       });
       localStorage.setItem("access_token", data.access_token);
       navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function githubLogin(codeResponse) {
+    try {
+      const { code } = useParams();
     } catch (error) {
       console.log(error);
     }
@@ -92,7 +97,7 @@ export default function LoginPage({ base_url }) {
             <GoogleLogin onSuccess={googleLogin} />
           </div>
           <div className="flex justify-center items-center">
-            <GithubLoginButton />
+            <GithubLoginButton base_url={base_url} />
           </div>
         </div>
       </div>
