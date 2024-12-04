@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../views/homePage";
 import LoginPage from "../components/LoginPage";
 import RegisterPage from "../components/RegisterPage";
-import Navbar from "../components/Navbar";
 import List from "../views/List";
 import CreateChatRoom from "../components/CreateChatRoom";
 import Toastify from "toastify-js";
