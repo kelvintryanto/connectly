@@ -19,7 +19,7 @@ import { chevronDownOutline,
   moonOutline
 } from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
-import { themeContext } from "../../../../live-chat/client/chating-app/src/context/ThemeContext";
+import { themeContext } from "../src/context/ThemeContext";
 
 
 

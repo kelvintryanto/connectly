@@ -10,8 +10,8 @@ import BaseLayout from "../views/BaseLayout";
 import { redirect } from "react-router-dom";
 import EditChat from "../components/EditForm";
 
-const base_url = "https://server.ragaram.site";
-// const base_url = "http://localhost:3000";
+// const base_url = "https://server.ragaram.site";
+const base_url = "http://localhost:3000";
 
 const router = createBrowserRouter([
   {
