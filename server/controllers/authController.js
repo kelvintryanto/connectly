@@ -1,6 +1,6 @@
 const { compareBcrypt } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
-const { User, RoomChat, Chat, user_roomchat } = require(`../models`);
+const { User, RoomChat, Chat, user_roomchat, room_masteruser } = require(`../models`);
 const { OAuth2Client } = require("google-auth-library");
 const axios = require("axios");
 class authController {
@@ -150,6 +150,10 @@ class authController {
   static async clear(req, res, next) {
     try {
       const { id } = req.params;
+
+      const roommaster = await room_masteruser.findOne({ where: { userId: req.loginInfo.userId, roomChatId: id } });
+
+      if (!roommaster) throw { name: `Forbidden` };
       await Chat.destroy({ where: { RoomChatId: id } });
 
       res.status(200).json({

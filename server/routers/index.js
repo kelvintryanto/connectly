@@ -16,7 +16,7 @@ router.get("/github-login", authController.githubLogin);
 
 router.use(authentication);
 router.get(`/find`, authController.userData);
-router.delete(`/clear/:id`, authorization, authController.clear);
+router.delete(`/clear/:id`, authController.clear);
 router.use(`/roomchat`, roomChat);
 router.use(`/chats`, chat);
 

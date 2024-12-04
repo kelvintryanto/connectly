@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      RoomChat.belongsToMany(models.User, { through: models.user_roomchat, foreignKey: `roomChatId` });
+      RoomChat.belongsToMany(models.User, { through: models.user_roomchat, foreignKey: `roomChatId`, onDelete: "CASCADE" });
       // define association here
-      RoomChat.hasMany(models.Chat, { foreignKey: `RoomChatId` });
+      RoomChat.hasMany(models.Chat, { foreignKey: `RoomChatId`, onDelete: "CASCADE" });
     }
   }
   RoomChat.init(

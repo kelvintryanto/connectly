@@ -1,5 +1,6 @@
-const { User, RoomChat, Chat, user_roomchat } = require(`../models`);
+const { User, RoomChat, Chat, user_roomchat, room_masteruser } = require(`../models`);
 const imagekit = require("../utils/imagekit");
+
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 class roomChatController {
   static async create(req, res, next) {
@@ -19,7 +20,7 @@ class roomChatController {
       });
       console.log(result);
       const roomchat = await RoomChat.create({ name, image: result.url });
-
+      await room_masteruser.create({ userId: userId, roomChatId: roomchat.id });
       await user_roomchat.create({ userId: userId, roomChatId: roomchat.id });
 
       res.status(201).json({
@@ -61,6 +62,10 @@ class roomChatController {
       const roomchat = await RoomChat.findByPk(id);
 
       if (!roomchat) throw { name: `NotFound` };
+
+      const roommaster = await room_masteruser.findOne({ where: { userId: req.loginInfo.userId } });
+
+      if (!roommaster) throw { name: `Forbidden` };
       await roomchat.destroy();
 
       res.status(200).json({
@@ -68,6 +73,7 @@ class roomChatController {
       });
     } catch (err) {
       next(err);
+      // console.log(`masuk sini`);
     }
   }
 

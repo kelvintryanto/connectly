@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("user_roomchats", {
+    await queryInterface.createTable("room_masterusers", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,7 +19,6 @@ module.exports = {
       },
       roomChatId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: `RoomChats`,
           key: `id`,
@@ -37,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("user_roomchats");
+    await queryInterface.dropTable("room_masterusers");
   },
 };
