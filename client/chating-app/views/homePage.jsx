@@ -50,7 +50,7 @@ export default function HomePage({ base_url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-      setEmail(data.data[0].email);
+
       setChatState((prev) => ({
         ...prev,
         email: data.data[0].email,
