@@ -1,22 +1,38 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { io } from "socket.io-client";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-import { chevronDownOutline, trashBinOutline, notificationsOffOutline, eyeOffOutline, archiveOutline, pinOutline, exitOutline, micOutline, sendOutline } from "ionicons/icons";
+import { chevronDownOutline,
+   trashBinOutline, 
+  notificationsOffOutline,
+  eyeOffOutline,
+  archiveOutline,
+  pinOutline,
+  exitOutline,
+  micOutline,
+  sendOutline,
+  sunnyOutline,
+  moonOutline
+} from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
+import { themeContext } from "../src/context/ThemeContext";
+
+
+
+
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
-    roomchat: [],
-    chat: [],
-    room: 0,
-    message: "",
-    email: "",
-    user: "",
-    ai: "",
+    roomchat: [], // Daftar semua room chat
+    chat: [],     // Daftar pesan dalam room aktif
+    room: 0,      // ID room aktif
+    message: "",  // Pesan yang sedang diketik user
+    email: "",    // Email user yang sedang login
+    user: "",     // Username user yang sedang login
+    ai: "",       // Respons AI (jika ada)
   });
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -28,10 +44,11 @@ export default function HomePage({ base_url }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [activeRoom, setActiveRoom] = useState(null);
   const navigate = useNavigate();
+  const { currentTheme, setCurrentTheme, theme } = useContext(themeContext);
 
   const fetchUser = async () => {
     try {
-      const { data } = await axios.get("https://server.ragaram.site/find", {
+      const { data } = await axios.get(`${base_url}/find`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
@@ -46,15 +63,15 @@ export default function HomePage({ base_url }) {
     try {
       setIsLoading(true);
       const { data } = await axios.get(`${base_url}/roomchat`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.access_token}`,
-        },
+        headers: { Authorization: `Bearer ${localStorage.access_token}` },
       });
+
+      setEmail(data.data[0].email);
 
       setChatState((prev) => ({
         ...prev,
-        email: data.data[0].email,
-        roomchat: data.data[0].RoomChats,
+        email: data.data[0].email, // perbarui email
+        roomchat: data.data[0].RoomChats, // perbarui daftar roomchat
       }));
     } catch (error) {
       console.error("Error fetching room chat:", error);
@@ -71,6 +88,10 @@ export default function HomePage({ base_url }) {
         },
       });
       setUser(data.data.username);
+      setChatState(prev => ({
+        ...prev,
+        user: data.data.username
+      }));
     } catch (error) {
       console.log(error);
     }
@@ -78,6 +99,7 @@ export default function HomePage({ base_url }) {
 
   useEffect(() => {
     fetchRoomChat();
+    fetchuser();
   }, []);
 
   useEffect(() => {
@@ -242,11 +264,21 @@ export default function HomePage({ base_url }) {
     setOpenMenu(openMenu === roomId ? null : roomId);
   };
 
+  const toggleTheme = () => {
+    setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
+  };
+
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
+      className={`min-h-screen ${theme[currentTheme].bgColor}`}>
       <div className="container mx-auto pt-6 px-6">
         <div className="flex h-[calc(100vh-88px)]">
-          <motion.aside initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="w-1/4 bg-gradient-to-br from-white/90 to-blue-50/90 backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-l-lg border-r border-blue-200">
+          <motion.aside 
+            initial={{ x: -100, opacity: 0 }} 
+            animate={{ x: 0, opacity: 1 }} 
+            transition={{ type: "spring", stiffness: 100 }} 
+            className={`w-1/4 bg-gradient-to-br ${theme[currentTheme].asideBg} backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-l-lg border-r border-blue-200`}
+          >
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-2xl font-bold text-gray-800">Welcome, {chatState.user}!</h1>
               <div className="flex space-x-2">
@@ -339,10 +371,21 @@ export default function HomePage({ base_url }) {
 
           <motion.main initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="flex-1 bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-r-lg">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">{chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}</h2>
+              <h2 className={`text-2xl font-bold ${chatState.room ? theme[currentTheme].textColor : 'text-gray-800'}`}>
+                {chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}
+              </h2>
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
+              >
+                <IonIcon 
+                  icon={currentTheme === 'light' ? moonOutline : sunnyOutline} 
+                  className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors"
+                />
+              </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-100/70 to-purple-100/70 p-4 rounded-lg shadow-inner">
+            <div className={`flex-1 overflow-y-auto bg-gradient-to-br ${theme[currentTheme].chatBg} p-4 rounded-lg shadow-inner`}>
               <AnimatePresence>
                 {chatState.chat.length === 0 ? (
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 text-center">
