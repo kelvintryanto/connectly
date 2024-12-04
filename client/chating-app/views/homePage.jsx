@@ -4,31 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-import { chevronDownOutline,
-   trashBinOutline, 
-  notificationsOffOutline,
-  eyeOffOutline,
-  archiveOutline,
-  pinOutline,
-  exitOutline,
-  micOutline,
-  sendOutline,
-  sunnyOutline,
-  moonOutline
-} from "ionicons/icons";
+import { chevronDownOutline, trashBinOutline, notificationsOffOutline, eyeOffOutline, archiveOutline, pinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
-
 
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
     roomchat: [], // Daftar semua room chat
-    chat: [],     // Daftar pesan dalam room aktif
-    room: 0,      // ID room aktif
-    message: "",  // Pesan yang sedang diketik user
-    email: "",    // Email user yang sedang login
-    user: "",     // Username user yang sedang login
-    ai: "",       // Respons AI 
+    chat: [], // Daftar pesan dalam room aktif
+    room: 0, // ID room aktif
+    message: "", // Pesan yang sedang diketik user
+    email: "", // Email user yang sedang login
+    user: "", // Username user yang sedang login
+    ai: "", // Respons AI
   });
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -42,7 +30,6 @@ export default function HomePage({ base_url }) {
   const navigate = useNavigate();
   const { currentTheme, setCurrentTheme, theme } = useContext(themeContext);
 
-
   const fetchUser = async () => {
     try {
       const { data } = await axios.get(`${base_url}/find`, {
@@ -55,7 +42,6 @@ export default function HomePage({ base_url }) {
       console.error("Error fetching user:", error);
     }
   };
-
 
   const fetchRoomChat = async () => {
     try {
@@ -86,9 +72,9 @@ export default function HomePage({ base_url }) {
         },
       });
       setUser(data.data.username);
-      setChatState(prev => ({
+      setChatState((prev) => ({
         ...prev,
-        user: data.data.username
+        user: data.data.username,
       }));
     } catch (error) {
       console.log(error);
@@ -201,33 +187,33 @@ export default function HomePage({ base_url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-      
+
       // Reset semua state yg berhubungan dgn room
       setRoom(0);
       setChat([]);
       setActiveRoom(null);
-      setChatState(prev => ({
+      setChatState((prev) => ({
         ...prev,
         room: 0,
         chat: [],
-        message: ""
+        message: "",
       }));
-      
+
       // Emit leave room ke socket
       socket.emit("leave_room", `room${roomId}`);
-      
+
       fetchRoomChat();
-      
+
       showToast("Berhasil keluar dari room! 👋", "success");
-      
     } catch (error) {
       console.log(error);
-      showToast("Gagal keluar dari room 😢", "error"); 
+      showToast("Gagal keluar dari room 😢", "error");
     }
   }
 
   const showToast = (message, type = "success") => {
-    Toastify({text: message,
+    Toastify({
+      text: message,
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -264,24 +250,18 @@ export default function HomePage({ base_url }) {
   };
 
   const toggleTheme = () => {
-    setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
+    setCurrentTheme(currentTheme === "light" ? "dark" : "light");
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
-      className={`min-h-screen ${theme[currentTheme].bgColor}`}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`min-h-screen ${theme[currentTheme].bgColor}`}>
       <div className="container mx-auto pt-6 px-6">
         <div className="flex h-[calc(100vh-88px)]">
-          <motion.aside 
-            initial={{ x: -100, opacity: 0 }} 
-            animate={{ x: 0, opacity: 1 }} 
-            transition={{ type: "spring", stiffness: 100 }} 
-            className={`w-1/4 bg-gradient-to-br ${theme[currentTheme].asideBg} backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-l-lg border-r border-blue-200`}
-          >
+          <motion.aside initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className={`w-1/4 bg-gradient-to-br ${theme[currentTheme].asideBg} backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-l-lg border-r border-blue-200`}>
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-2xl font-bold text-gray-800">Welcome, {chatState.user}!</h1>
               <div className="flex space-x-2">
-                <Link to="/list" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full hover:from-blue-600 hover:to-purple-700 transition duration-300">
+                <Link to="/list" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full hover:from-blue-600 hover:to-purple-700 transition duration-300 text-center">
                   Add Room
                 </Link>
               </div>
@@ -320,20 +300,12 @@ export default function HomePage({ base_url }) {
 
           <motion.main initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="flex-1 bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-r-lg">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-800">{chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}</h2>
               <div className="flex items-center gap-2">
                 {activeRoom && (
                   <div className="relative">
-                    <button 
-                      onClick={(e) => handleDropdownClick(e, activeRoom)} 
-                      className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
-                    >
-                      <IonIcon 
-                        icon={chevronDownOutline} 
-                        className={`w-6 h-6 text-gray-500 hover:text-gray-700 transition-transform duration-200 ${openMenu === activeRoom ? "rotate-180" : ""}`} 
-                      />
+                    <button onClick={(e) => handleDropdownClick(e, activeRoom)} className="p-2 rounded-full hover:bg-gray-200/20 transition-colors">
+                      <IonIcon icon={chevronDownOutline} className={`w-6 h-6 text-gray-500 hover:text-gray-700 transition-transform duration-200 ${openMenu === activeRoom ? "rotate-180" : ""}`} />
                     </button>
 
                     {openMenu === activeRoom && (
@@ -363,14 +335,8 @@ export default function HomePage({ base_url }) {
                     )}
                   </div>
                 )}
-                <button 
-                  onClick={toggleTheme}
-                  className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
-                >
-                  <IonIcon 
-                    icon={currentTheme === 'light' ? moonOutline : sunnyOutline} 
-                    className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors"
-                  />
+                <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-200/20 transition-colors">
+                  <IonIcon icon={currentTheme === "light" ? moonOutline : sunnyOutline} className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors" />
                 </button>
               </div>
             </div>
