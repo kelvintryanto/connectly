@@ -6,10 +6,6 @@ import socket from "..";
 import { IonIcon } from "@ionic/react";
 import { chevronDownOutline,
    trashBinOutline, 
-  notificationsOffOutline,
-  eyeOffOutline,
-  archiveOutline,
-  pinOutline,
   exitOutline,
   micOutline,
   sendOutline,
