@@ -23,6 +23,7 @@ module.exports = {
           model: `RoomChats`,
           key: `id`,
         },
+        onDelete: `CASCADE`,
       },
       createdAt: {
         allowNull: false,

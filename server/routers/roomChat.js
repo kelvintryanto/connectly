@@ -10,6 +10,6 @@ router.post(`/join/:id`, roomChatController.join);
 router.delete(`/leave/:id`, roomChatController.leave);
 router.get(`/:id`, roomChatController.detail);
 router.put(`/:id`, roomChatController.edit); // next
-// router.delete(`/:id`, roomChatController.delete); // next
+router.delete(`/:id`, roomChatController.delete); // next
 
 module.exports = router;

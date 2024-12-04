@@ -10,7 +10,6 @@ import { motion } from "framer-motion";
 import { cardVariants, containerVariants, loadingVariants } from "../constants/animationVariants";
 import { Trash } from "@phosphor-icons/react";
 
-
 export default function List({ base_url }) {
   const { roomchat, loading, error } = useSelector((state) => state.roomchat);
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ export default function List({ base_url }) {
     // console.log(roomchat.data);
     //
   }, []);
-  
 
   async function onJoin(id) {
     try {
@@ -94,6 +92,36 @@ export default function List({ base_url }) {
     }
   }
 
+  async function onDelete(deleteId) {
+    try {
+      const { data } = await axios.delete(`${base_url}/roomchat/${deleteId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.access_token}`,
+        },
+      });
+
+      // console.log(data);
+      dispatch(fetchAsync());
+    } catch (error) {
+      // console.log(error);
+      Toastify({
+        text: `YOU NOT CREATE THIS ROOM`,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "#AA0000",
+          color: "#FFF",
+          borderRadius: "10px",
+        },
+        onClick: function () {}, // Callback after click
+      }).showToast();
+    }
+  }
+
   if (loading) {
     return (
       <motion.section className="flex justify-center items-center" variants={loadingVariants} initial="hidden" animate="visible">
@@ -131,11 +159,7 @@ export default function List({ base_url }) {
                       <button onClick={() => onJoin(el.id)} className="px-6 py-2 rounded-full bg-violet-100 text-violet-600 hover:bg-violet-200 transition duration-300">
                         Join Room
                       </button>
-                      <Trash 
-                        size={24}
-                        weight="bold"
-                        className="text-violet-500 hover:text-violet-700 cursor-pointer ml-4 transition-colors duration-300"
-                      />
+                      <Trash size={24} weight="bold" className="text-violet-500 hover:text-violet-700 cursor-pointer ml-4 transition-colors duration-300" onClick={() => onDelete(el.id)} />
                     </div>
                   </div>
                 </div>
