@@ -6,8 +6,19 @@ import { io } from "socket.io-client";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-import { chevronDownOutline, trashBinOutline, notificationsOffOutline, eyeOffOutline, archiveOutline, pinOutline, exitOutline, micOutline, sendOutline } from "ionicons/icons";
+import { chevronDownOutline,
+   trashBinOutline, 
+  notificationsOffOutline,
+  eyeOffOutline,
+  archiveOutline,
+  pinOutline,
+  exitOutline,
+  micOutline,
+  sendOutline,
+} from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
+
+
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
     roomchat: [],
