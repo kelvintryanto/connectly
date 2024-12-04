@@ -2,6 +2,7 @@ const { compareBcrypt } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const { User, RoomChat, Chat, user_roomchat } = require(`../models`);
 const { OAuth2Client } = require("google-auth-library");
+const axios = require("axios");
 class authController {
   static async register(req, res, next) {
     try {
@@ -103,6 +104,34 @@ class authController {
     } catch (err) {
       console.log(err);
       next(err);
+    }
+  }
+
+  static async githubLogin(req, res, next) {
+    try {
+      console.log("masuk github login di console server");
+      const { code } = req.query;
+
+      const { data } = await axios({
+        method: "post",
+        url: "https://github.com/login/oauth/access_token",
+        params: {
+          client_id: "Ov23li5Y5CTVE0X7rGmr",
+          client_secret: "c35afe64b74f2fb4ed07383634c0d113c517bb63",
+          code: code,
+          redirect_uri: "http://localhost:5173/login",
+        },
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      console.log("=======", data, "=======");
+      // kirim responsenya
+      res.status(200).send(data);
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
   }
 
