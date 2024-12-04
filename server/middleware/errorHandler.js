@@ -8,7 +8,7 @@ const errorHandler = (err, req, res, next) => {
   }
   if (err.name === "AlreadyJoin") {
     status = 403;
-    message = `You Already Join `;
+    message = `You Already Join`;
   }
   if (err.name == "SequelizeValidationError") {
     status = 400;
@@ -27,7 +27,7 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === `Forbidden`) {
     status = 403;
-    message = `You dont have any Access`;
+    message = `You don't have any Access`;
   }
 
   if (err.name === `BadRequest`) {
@@ -37,7 +37,7 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === `LoginError`) {
     status = 401;
-    message = `error invalid username or invalid password`;
+    message = `Invalid username or password`;
   }
 
   if (err.name === `Unauthorized` || err.name === `JsonWebTokenError`) {

@@ -105,7 +105,7 @@ export default function List({ base_url }) {
     } catch (error) {
       // console.log(error);
       Toastify({
-        text: `YOU NOT CREATE THIS ROOM`,
+        text: `You don't create this room!`,
         duration: 3000,
         newWindow: true,
         close: true,
@@ -145,8 +145,7 @@ export default function List({ base_url }) {
                 whileHover={{
                   scale: 1.02,
                   transition: { type: "spring", stiffness: 300 },
-                }}
-              >
+                }}>
                 <div className="h-48 overflow-hidden">
                   <img src={el.image || "https://via.placeholder.com/400x200"} className="w-full h-full object-cover transform hover:scale-105 transition duration-300" alt={el.name} />
                 </div>

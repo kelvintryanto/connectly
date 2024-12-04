@@ -261,7 +261,7 @@ export default function HomePage({ base_url }) {
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-2xl font-bold text-gray-800">Welcome, {chatState.user}!</h1>
               <div className="flex space-x-2">
-                <Link to="/list" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full hover:from-blue-600 hover:to-purple-700 transition duration-300 text-center">
+                <Link to="/list" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded hover:from-blue-600 hover:to-purple-700 transition duration-300 text-center">
                   Add Room
                 </Link>
               </div>
@@ -376,10 +376,10 @@ export default function HomePage({ base_url }) {
                     }));
                   }}
                 />
-                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300 rounded mx-2">
                   <IonIcon icon={micOutline} className="text-white" />
                 </button>
-                <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300 rounded">
                   <IonIcon icon={sendOutline} className="text-white" />
                 </button>
               </motion.form>
