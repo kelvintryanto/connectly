@@ -17,6 +17,7 @@ class roomChatController {
         fileName: req.file.originalname,
         // [Optional] set the image tags
       });
+      console.log(result);
       const roomchat = await RoomChat.create({ name, image: result.url });
 
       await user_roomchat.create({ userId: userId, roomChatId: roomchat.id });
