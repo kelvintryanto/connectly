@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import { io } from "socket.io-client";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
@@ -22,8 +20,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
 
 
-
-
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
     roomchat: [], // Daftar semua room chat
@@ -32,7 +28,7 @@ export default function HomePage({ base_url }) {
     message: "",  // Pesan yang sedang diketik user
     email: "",    // Email user yang sedang login
     user: "",     // Username user yang sedang login
-    ai: "",       // Respons AI (jika ada)
+    ai: "",       // Respons AI 
   });
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -205,30 +201,33 @@ export default function HomePage({ base_url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
+      
+      // Reset semua state yg berhubungan dgn room
+      setRoom(0);
+      setChat([]);
+      setActiveRoom(null);
+      setChatState(prev => ({
+        ...prev,
+        room: 0,
+        chat: [],
+        message: ""
+      }));
+      
+      // Emit leave room ke socket
+      socket.emit("leave_room", `room${roomId}`);
+      
       fetchRoomChat();
+      
+      showToast("Berhasil keluar dari room! 👋", "success");
+      
     } catch (error) {
       console.log(error);
-
-      Toastify({
-        text: `Success Leave Chat`,
-        duration: 3000,
-        newWindow: true,
-        close: true,
-        gravity: "bottom", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-          background: "#34D399",
-          color: "#000000",
-        },
-        onClick: function () {}, // Callback after click
-      }).showToast();
+      showToast("Gagal keluar dari room 😢", "error"); 
     }
   }
 
   const showToast = (message, type = "success") => {
-    Toastify({
-      text: message,
+    Toastify({text: message,
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -315,12 +314,31 @@ export default function HomePage({ base_url }) {
                         <p className="text-sm text-gray-600">member chat:</p>
                       </div>
                     </div>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ul>
+          </motion.aside>
 
-                    <button onClick={(e) => handleDropdownClick(e, el.id)} className="p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <IonIcon icon={chevronDownOutline} className={`text-gray-600 transition-transform duration-200 ${openMenu === el.id ? "rotate-180" : ""}`} />
+          <motion.main initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="flex-1 bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-r-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">
+                {chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}
+              </h2>
+              <div className="flex items-center gap-2">
+                {activeRoom && (
+                  <div className="relative">
+                    <button 
+                      onClick={(e) => handleDropdownClick(e, activeRoom)} 
+                      className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
+                    >
+                      <IonIcon 
+                        icon={chevronDownOutline} 
+                        className={`w-6 h-6 text-gray-500 hover:text-gray-700 transition-transform duration-200 ${openMenu === activeRoom ? "rotate-180" : ""}`} 
+                      />
                     </button>
 
-                    {openMenu === el.id && (
+                    {openMenu === activeRoom && (
                       <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg z-50 py-1">
                         <button
                           onClick={(e) => {
@@ -333,27 +351,11 @@ export default function HomePage({ base_url }) {
                           <IonIcon icon={trashBinOutline} />
                           Clear Chat
                         </button>
-                        <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
-                          <IonIcon icon={notificationsOffOutline} />
-                          Mute
-                        </button>
-                        <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
-                          <IonIcon icon={eyeOffOutline} />
-                          Hide Chat
-                        </button>
-                        <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
-                          <IonIcon icon={archiveOutline} />
-                          Archive
-                        </button>
-                        <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
-                          <IonIcon icon={pinOutline} />
-                          Open
-                        </button>
                         <hr className="my-1" />
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleLeave(el.id);
+                            handleLeave(activeRoom);
                             setOpenMenu(null);
                           }}
                           className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
@@ -363,26 +365,18 @@ export default function HomePage({ base_url }) {
                         </button>
                       </div>
                     )}
-                  </motion.li>
-                ))}
-              </AnimatePresence>
-            </ul>
-          </motion.aside>
-
-          <motion.main initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="flex-1 bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-r-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className={`text-2xl font-bold ${chatState.room ? theme[currentTheme].textColor : 'text-gray-800'}`}>
-                {chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}
-              </h2>
-              <button 
-                onClick={toggleTheme}
-                className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
-              >
-                <IonIcon 
-                  icon={currentTheme === 'light' ? moonOutline : sunnyOutline} 
-                  className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors"
-                />
-              </button>
+                  </div>
+                )}
+                <button 
+                  onClick={toggleTheme}
+                  className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
+                >
+                  <IonIcon 
+                    icon={currentTheme === 'light' ? moonOutline : sunnyOutline} 
+                    className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors"
+                  />
+                </button>
+              </div>
             </div>
 
             <div className={`flex-1 overflow-y-auto bg-gradient-to-br ${theme[currentTheme].chatBg} p-4 rounded-lg shadow-inner`}>
