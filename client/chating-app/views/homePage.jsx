@@ -19,6 +19,8 @@ import { chevronDownOutline,
 import { motion, AnimatePresence } from "framer-motion";
 
 
+
+
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
     roomchat: [],
