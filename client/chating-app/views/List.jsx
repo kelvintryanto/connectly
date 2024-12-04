@@ -8,6 +8,9 @@ import socket from "..";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { cardVariants, containerVariants, loadingVariants } from "../constants/animationVariants";
+import { Trash } from "@phosphor-icons/react";
+
+
 export default function List({ base_url }) {
   const { roomchat, loading, error } = useSelector((state) => state.roomchat);
   const dispatch = useDispatch();
@@ -17,6 +20,7 @@ export default function List({ base_url }) {
     // console.log(roomchat.data);
     //
   }, []);
+  
 
   async function onJoin(id) {
     try {
@@ -105,7 +109,7 @@ export default function List({ base_url }) {
             roomchat?.data?.map((el, index) => (
               <motion.div
                 key={el.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative"
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
@@ -123,9 +127,16 @@ export default function List({ base_url }) {
                   <p className="text-gray-500 mb-4">Join this room to start chatting with others!</p>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-violet-500">{el.members || 0} members</span>
-                    <button onClick={() => onJoin(el.id)} className="px-6 py-2 rounded-full bg-violet-100 text-violet-600 hover:bg-violet-200 transition duration-300">
-                      Join Room
-                    </button>
+                    <div className="flex items-center">
+                      <button onClick={() => onJoin(el.id)} className="px-6 py-2 rounded-full bg-violet-100 text-violet-600 hover:bg-violet-200 transition duration-300">
+                        Join Room
+                      </button>
+                      <Trash 
+                        size={24}
+                        weight="bold"
+                        className="text-violet-500 hover:text-violet-700 cursor-pointer ml-4 transition-colors duration-300"
+                      />
+                    </div>
                   </div>
                 </div>
               </motion.div>

@@ -1,0 +1,33 @@
+CARA BIKIN DARK/LIGHT MODE DI REACT ✨
+
+> Bikin Context dulu
+   - Context itu kyk wadah besar buat nyimpen data yg bisa dipake di mana aja
+   - Kita pake buat nyimpen info dark/light mode nya
+
+> Setup Provider
+   - Provider itu pembungkus buat semua komponen
+   - Tujuannya biar semua komponen bisa akses data theme
+   - Ditaro di file paling atas (main.jsx)
+
+> Siapin Theme Style
+   - Tentuin mau style apa aja yg beda di dark & light
+   - Misal: warna background, warna text, dll
+   - Pake Tailwind CSS buat gampangnya
+
+> Pasang di Komponen
+   - Ambil data theme pake useContext
+   - Bikin tombol buat ganti2 theme
+   - Terapin style sesuai theme yg dipilih
+
+> Testing
+   - Cek tombol ganti theme udah work blm
+   - Pastiin style berubah sesuai theme
+   - Cek gk ada style yg bentrok
+
+Inget:
+- Simpen theme di context biar gampang diakses
+- Pake useState buat ganti2 theme
+- Style dibikin object biar rapi
+- Default pake light mode
+
+NB: Klo bingung, inget aja context itu kyk tas yg isinya bisa diambil di mana aja!
