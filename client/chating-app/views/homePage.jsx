@@ -104,7 +104,6 @@ export default function HomePage({ base_url }) {
 
     socket.emit("userData", email);
     // socket.on("ragagantenk", (event) => {
-    //   // console.log(event, "<< event");
     // });
 
     socket.on("ChatUpdate", (event) => {
@@ -393,7 +392,7 @@ export default function HomePage({ base_url }) {
             </div>
 
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mt-4">
-              <motion.form whileTap={{ scale: 0.99 }} className="flex" onSubmit={(e) => handleMessage(e)}>
+              <motion.form whileTap={{ scale: 0.99 }} className="flex gap-2" onSubmit={(e) => handleMessage(e)}>
                 <input
                   type="text"
                   placeholder="Type a message..."
@@ -406,11 +405,17 @@ export default function HomePage({ base_url }) {
                     }));
                   }}
                 />
-                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                  <IonIcon icon={micOutline} className="text-white" />
+                <button 
+                  type="button" 
+                  className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300"
+                >
+                  <IonIcon icon={micOutline} className="w-6 h-6" />
                 </button>
-                <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                  <IonIcon icon={sendOutline} className="text-white" />
+                <button 
+                  type="submit" 
+                  className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300"
+                >
+                  <IonIcon icon={sendOutline} className="w-6 h-6" />
                 </button>
               </motion.form>
             </motion.div>
