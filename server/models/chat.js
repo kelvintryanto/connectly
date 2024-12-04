@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Chat.belongsTo(models.RoomChat, { foreignKey: `RoomChatId` });
+      Chat.belongsTo(models.RoomChat, { foreignKey: `RoomChatId`, onDelete: "CASCADE" });
       // define association here
     }
   }
