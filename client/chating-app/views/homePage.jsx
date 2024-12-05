@@ -254,6 +254,7 @@ export default function HomePage({ base_url }) {
     setOpenMenu(openMenu === roomId ? null : roomId);
   };
 
+  // fungsi untuk toggle theme 
   const toggleTheme = () => {
     setCurrentTheme(currentTheme === "light" ? "dark" : "light");
   };
@@ -399,9 +400,10 @@ export default function HomePage({ base_url }) {
                     }));
                   }}
                 />
-                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                  <IonIcon icon={micOutline} className="w-6 h-6" />
-                </button>
+                {/* Voice button dicomment dulu */}
+                {/* <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                    <IonIcon icon={micOutline} className="w-6 h-6" />
+                </button> */}
                 <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
                   <IonIcon icon={sendOutline} className="w-6 h-6" />
                 </button>
