@@ -35,7 +35,7 @@ class authController {
           email,
         },
       });
-      //   console.log(user);
+      console.log(user);
 
       if (!user) {
         throw {

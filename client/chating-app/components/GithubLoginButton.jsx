@@ -51,7 +51,7 @@ export default function GithubLoginButton({ base_url }) {
       // lempar authrizationGithubCode ini ke back end lalu kembalikan access token yang digunakan dalam web untuk dimasukkan ke dalam localstorage accesstoken
       // console.log("masuk getGithubAccessToken: ", authorizationGithubCode);
       const { data } = await axios.post(`${base_url}/github-login`, { code: authorizationGithubCode });
-      if (data?.access_token) {
+      if (data.access_token) {
         localStorage.setItem("access_token", data.access_token);
         localStorage.removeItem("isGithubLogin");
       }
