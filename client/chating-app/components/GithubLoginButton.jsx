@@ -8,7 +8,7 @@ export default function GithubLoginButton({ base_url }) {
 
   function handleGithubLogin() {
     // ini bisa ditaruh di env pakai dotenv
-    const client_id = "Ov23li5Y5CTVE0X7rGmr";
+    const client_id = "Ov23linRPb5NRX1VFRnC";
     const redirect_uri = "https://connectly-gamma.vercel.app/login";
 
     // pinjam localStorage untuk menyimpan isGithubLogin
