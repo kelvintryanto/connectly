@@ -352,9 +352,8 @@ export default function HomePage({ base_url }) {
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 text-center">
                     No messages yet.
                   </motion.p>
-                ) : (
-                  // logika chat kalau dia sendernya sama dengan user, maka dikanan, kalau tidak dikiri
-                  // kalo sendernya bukan user, maka tampilkan image atau inisial namanya
+                ) : 
+
                   chatState.chat.map((el) => (
                     <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
                       {/* Tampilkan gambar profile atau inisial klo bukan user yg login */}
@@ -376,20 +375,12 @@ export default function HomePage({ base_url }) {
                       )}
                       <div>
                         <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
-                          {/* Tampilkan nama sender klo bukan user yg login */}
-                          {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
-                          <p className="text-sm text-gray-800">{el.content}</p>
-                        </div>
-                      </div>
-                      )}
-                      <div>
-                        <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
                           {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
                           <p className="text-sm text-gray-800">{el.content}</p>
                         </div>
                       </div>
                     </motion.div>
-                  ))
+                  )
                 )}
               </AnimatePresence>
             </div>
@@ -420,5 +411,5 @@ export default function HomePage({ base_url }) {
         </div>
       </div>
     </motion.div>
-  );
+  )
 }
