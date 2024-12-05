@@ -381,10 +381,13 @@ export default function HomePage({ base_url }) {
                         transition={{ type: "spring", stiffness: 500 }} 
                         className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}
                     >
+                        {/* Tampilkan gambar profile atau inisial klo bukan user yg login */}
                         {chatState.user !== el.sender && (
                             <div className="mr-2 flex-shrink-0">
                                 <img 
                                     src={el.User?.image || `https://ui-avatars.com/api/?name=${
+                                      // Klo nama ada spasi (lebih dari 1 kata), pake nama lengkap
+                                      // Klo cuma 1 kata, ambil huruf pertama aja
                                         el.sender.includes(' ') 
                                             ? el.sender 
                                             : el.sender.charAt(0)
@@ -396,6 +399,7 @@ export default function HomePage({ base_url }) {
                         )}
                         <div>
                             <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
+                                {/* Tampilkan nama sender klo bukan user yg login */}
                                 {chatState.user !== el.sender && (
                                     <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>
                                 )}
