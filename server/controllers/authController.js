@@ -145,6 +145,7 @@ class authController {
       const githubEmail = emailResponse.data[0].email;
       const userData = userResponse.data;
       console.log(githubEmail, userData, "<<<<<<<<<<<<<<<<<<<<<<=====================ini datanya cuy");
+<<<<<<< HEAD
       /**
        * kelvin.tryanto@gmail.com {
           login: 'kelvintryanto',
@@ -195,6 +196,8 @@ class authController {
           }
         }
        */
+=======
+>>>>>>> a575bf090cca8651230b6891c5c480bf6d2ba056
 
       // buat usernya kalau tidak ada yang terdaftar berdasarkan email
       // kalau ada ambil datanya
@@ -206,12 +209,16 @@ class authController {
           username: userData.login,
           email: githubEmail,
           password: "password_github",
+<<<<<<< HEAD
           // masukkin profile picturenya di sini
+=======
+>>>>>>> a575bf090cca8651230b6891c5c480bf6d2ba056
         },
         hooks: false,
       });
 
       // bikin access_token dari application connectly
+<<<<<<< HEAD
       const access_token = signToken({
         userId: user.id,
         username: user.username,
@@ -222,6 +229,18 @@ class authController {
 
       // kirim access token dari web application connectly
       res.status(200).json({ access_token });
+=======
+      // const access_token = signToken({
+      //   userId: user.id,
+      //   username: user.username,
+      //   email: user.username,
+      //   socket: user.socket,
+      // });
+      // console.log(access_token);
+
+      // kirim access token dari web application connectly
+      // res.status(200).json({ access_token });
+>>>>>>> a575bf090cca8651230b6891c5c480bf6d2ba056
     } catch (error) {
       console.log(error);
       next(error);
@@ -231,9 +250,10 @@ class authController {
   static async userData(req, res, next) {
     try {
       const username = req.loginInfo.username;
-
+      const image = await User.findOne({ where: { username: req.loginInfo.username } }, { attributes: `image` });
       res.status(200).json({
         username,
+        image,
       });
     } catch (err) {
       next(err);

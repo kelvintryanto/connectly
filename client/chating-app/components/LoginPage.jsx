@@ -5,6 +5,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { mailOutline, lockClosedOutline, laptopOutline, leafOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import GithubLoginButton from "./GithubLoginButton";
+import Toastify from "toastify-js";
 
 export default function LoginPage({ base_url }) {
   const [email, setEmail] = useState("");
@@ -21,6 +22,20 @@ export default function LoginPage({ base_url }) {
       navigate(`/`);
     } catch (error) {
       console.log(error);
+      Toastify({
+        text: error.response.data.message,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #ef4444, #f97316)",
+          borderRadius: "8px",
+        },
+        onClick: function () {}, // Callback after click
+      }).showToast();
     }
   }
 
