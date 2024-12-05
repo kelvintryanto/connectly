@@ -6,6 +6,10 @@ import socket from "..";
 import { IonIcon } from "@ionic/react";
 import { chevronDownOutline,
    trashBinOutline, 
+  notificationsOffOutline,
+  eyeOffOutline,
+  archiveOutline,
+  pinOutline,
   exitOutline,
   micOutline,
   sendOutline,
@@ -104,6 +108,7 @@ export default function HomePage({ base_url }) {
 
     socket.emit("userData", email);
     // socket.on("ragagantenk", (event) => {
+    //   // console.log(event, "<< event");
     // });
 
     socket.on("ChatUpdate", (event) => {
@@ -377,37 +382,14 @@ export default function HomePage({ base_url }) {
                     No messages yet.
                   </motion.p>
                 ) : (
-                  // logika chat kalau dia sendernya sama dengan user, maka dikanan, kalau tidak dikiri
                   chatState.chat.map((el) => (
-                    <motion.div 
-                        key={el.id} 
-                        initial={{ opacity: 0, y: 20 }} 
-                        animate={{ opacity: 1, y: 0 }} 
-                        transition={{ type: "spring", stiffness: 500 }} 
-                        className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}
-                    >
-                      {/* kalo sendernya bukan user, maka tampilkan image atau inisial namanya*/}
-                        {chatState.user !== el.sender && (
-                            <div className="mr-2 flex-shrink-0">
-                                <img 
-                                    src={el.User?.image || `https://ui-avatars.com/api/?name=${
-                                        el.sender.includes(' ') 
-                                            ? el.sender 
-                                            : el.sender.charAt(0)
-                                    }&background=random`} 
-                                    alt={el.sender} 
-                                    className="w-8 h-8 rounded-full object-cover"
-                                />
-                            </div>
-                        )}
-                        <div>
-                            <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
-                                {chatState.user !== el.sender && (
-                                    <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>
-                                )}
-                                <p className="text-sm text-gray-800">{el.content}</p>
-                            </div>
+                    <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
+                      <div>
+                        <div className={`${chatState.user === el.sender ? "bg-blue-200 text-right" : "bg-green-100 text-left"} text-xs text-gray-800 p-1 rounded-t-lg w-fit mb-1`}>{chatState.user === el.sender ? `You` : el.sender}</div>
+                        <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
+                          <p className="text-sm text-gray-800">{el.content}</p>
                         </div>
+                      </div>
                     </motion.div>
                   ))
                 )}
@@ -415,7 +397,7 @@ export default function HomePage({ base_url }) {
             </div>
 
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mt-4">
-              <motion.form whileTap={{ scale: 0.99 }} className="flex gap-2" onSubmit={(e) => handleMessage(e)}>
+              <motion.form whileTap={{ scale: 0.99 }} className="flex" onSubmit={(e) => handleMessage(e)}>
                 <input
                   type="text"
                   placeholder="Type a message..."
@@ -428,17 +410,11 @@ export default function HomePage({ base_url }) {
                     }));
                   }}
                 />
-                <button 
-                  type="button" 
-                  className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300"
-                >
-                  <IonIcon icon={micOutline} className="w-6 h-6" />
+                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                  <IonIcon icon={micOutline} className="text-white" />
                 </button>
-                <button 
-                  type="submit" 
-                  className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300"
-                >
-                  <IonIcon icon={sendOutline} className="w-6 h-6" />
+                <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                  <IonIcon icon={sendOutline} className="text-white" />
                 </button>
               </motion.form>
             </motion.div>

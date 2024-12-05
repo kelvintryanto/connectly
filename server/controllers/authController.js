@@ -180,9 +180,10 @@ class authController {
   static async userData(req, res, next) {
     try {
       const username = req.loginInfo.username;
-
+      const image = await User.findOne({ where: { username: req.loginInfo.username } }, { attributes: `image` });
       res.status(200).json({
         username,
+        image,
       });
     } catch (err) {
       next(err);
