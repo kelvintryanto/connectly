@@ -4,14 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-import { chevronDownOutline,
-   trashBinOutline, 
-  exitOutline,
-  micOutline,
-  sendOutline,
-  sunnyOutline,
-  moonOutline
-} from "ionicons/icons";
+import { chevronDownOutline, trashBinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
 
@@ -377,7 +370,9 @@ export default function HomePage({ base_url }) {
                     No messages yet.
                   </motion.p>
                 ) : (
+
                   // logika chat kalau dia sendernya sama dengan user, maka dikanan, kalau tidak dikiri
+                  // kalo sendernya bukan user, maka tampilkan image atau inisial namanya
                   chatState.chat.map((el) => (
                     <motion.div 
                         key={el.id} 
@@ -386,7 +381,6 @@ export default function HomePage({ base_url }) {
                         transition={{ type: "spring", stiffness: 500 }} 
                         className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}
                     >
-                      {/* kalo sendernya bukan user, maka tampilkan image atau inisial namanya*/}
                         {chatState.user !== el.sender && (
                             <div className="mr-2 flex-shrink-0">
                                 <img 
@@ -413,7 +407,7 @@ export default function HomePage({ base_url }) {
                 )}
               </AnimatePresence>
             </div>
-
+            {/* form input message */}
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mt-4">
               <motion.form whileTap={{ scale: 0.99 }} className="flex gap-2" onSubmit={(e) => handleMessage(e)}>
                 <input
