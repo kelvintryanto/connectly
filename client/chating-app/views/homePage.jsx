@@ -277,8 +277,7 @@ export default function HomePage({ base_url }) {
                 backgroundImage: "url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGo0ZDRhbnIwaGRxdnB6aTVvbDhsbzV1Mnl4a3QybW9yNDJ2d2tmZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GRPy8MKag9U1U88hzY/giphy.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-              }}
-            ></div>
+              }}></div>
             <ul className="flex-1 overflow-y-auto">
               <AnimatePresence>
                 {chatState.roomchat.map((el) => (
@@ -290,8 +289,7 @@ export default function HomePage({ base_url }) {
                     whileHover={{ scale: 1.02 }}
                     className={`group relative p-2 hover:bg-gray-300 rounded flex justify-between items-center transition duration-300 cursor-pointer
                                         ${activeRoom === el.id ? "bg-blue-200" : ""}`}
-                    onClick={() => handleDetailClick(el.id)}
-                  >
+                    onClick={() => handleDetailClick(el.id)}>
                     <div className="flex items-center flex-1">
                       <img src={el.image} alt="Profile" className="w-10 h-10 rounded-full flex-shrink-0 object-cover shadow-md" />
                       <div className="ml-3">
@@ -323,8 +321,7 @@ export default function HomePage({ base_url }) {
                             handleClear();
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                        >
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
                           <IonIcon icon={trashBinOutline} />
                           Clear Chat
                         </button>
@@ -335,8 +332,7 @@ export default function HomePage({ base_url }) {
                             handleLeave(activeRoom);
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
-                        >
+                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2">
                           <IonIcon icon={exitOutline} />
                           Leave Room
                         </button>
@@ -358,13 +354,33 @@ export default function HomePage({ base_url }) {
                   </motion.p>
                 ) : (
                   // logika chat kalau dia sendernya sama dengan user, maka dikanan, kalau tidak dikiri
+                  // kalo sendernya bukan user, maka tampilkan image atau inisial namanya
                   chatState.chat.map((el) => (
                     <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
-                      {/* kalo sendernya bukan user, maka tampilkan image atau inisial namanya*/}
+                      {/* Tampilkan gambar profile atau inisial klo bukan user yg login */}
                       {chatState.user !== el.sender && (
                         <div className="mr-2 flex-shrink-0">
-                          <img src={el.User?.image || `https://ui-avatars.com/api/?name=${el.sender.includes(" ") ? el.sender : el.sender.charAt(0)}&background=random`} alt={el.sender} className="w-8 h-8 rounded-full object-cover" />
+                          <img
+                            src={
+                              el.User?.image ||
+                              `https://ui-avatars.com/api/?name=${
+                                // Klo nama ada spasi (lebih dari 1 kata), pake nama lengkap
+                                // Klo cuma 1 kata, ambil huruf pertama aja
+                                el.sender.includes(" ") ? el.sender : el.sender.charAt(0)
+                              }&background=random`
+                            }
+                            alt={el.sender}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
                         </div>
+                      )}
+                      <div>
+                        <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
+                          {/* Tampilkan nama sender klo bukan user yg login */}
+                          {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
+                          <p className="text-sm text-gray-800">{el.content}</p>
+                        </div>
+                      </div>
                       )}
                       <div>
                         <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
@@ -377,7 +393,7 @@ export default function HomePage({ base_url }) {
                 )}
               </AnimatePresence>
             </div>
-
+            {/* form input message */}
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mt-4">
               <motion.form whileTap={{ scale: 0.99 }} className="flex gap-2" onSubmit={(e) => handleMessage(e)}>
                 <input
