@@ -207,6 +207,7 @@ class authController {
           email: githubEmail,
           password: "password_github",
           // masukkin profile picturenya di sini
+          image: userData.avatar_url,
         },
         hooks: false,
       });
