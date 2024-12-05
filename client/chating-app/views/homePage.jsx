@@ -4,11 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-<<<<<<< HEAD
-import { chevronDownOutline, trashBinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
-=======
 import { chevronDownOutline, trashBinOutline, notificationsOffOutline, eyeOffOutline, archiveOutline, pinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
->>>>>>> 091fdc257aad6b95ddc7e63bcccb3e93b7ba83cd
 import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
 
@@ -21,10 +17,7 @@ export default function HomePage({ base_url }) {
     email: "", // Email user yang sedang login
     user: "", // Username user yang sedang login
     ai: "", // Respons AI
-<<<<<<< HEAD
     image: "",
-=======
->>>>>>> 091fdc257aad6b95ddc7e63bcccb3e93b7ba83cd
   });
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -37,10 +30,7 @@ export default function HomePage({ base_url }) {
   const [activeRoom, setActiveRoom] = useState(null);
   const navigate = useNavigate();
   const { currentTheme, setCurrentTheme, theme } = useContext(themeContext);
-<<<<<<< HEAD
   // const []
-=======
->>>>>>> 091fdc257aad6b95ddc7e63bcccb3e93b7ba83cd
 
   const fetchUser = async () => {
     try {
@@ -363,37 +353,18 @@ export default function HomePage({ base_url }) {
                     No messages yet.
                   </motion.p>
                 ) : (
-                  // logika chat kalau dia sendernya sama dengan user, maka dikanan, kalau tidak dikiri
-                  // kalo sendernya bukan user, maka tampilkan image atau inisial namanya
                   chatState.chat.map((el) => (
                     <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
-                      {/* Tampilkan gambar profile atau inisial klo bukan user yg login */}
+                      {/* Tampilkan gambar profil atau inisial jika bukan user yang login */}
                       {chatState.user !== el.sender && (
                         <div className="mr-2 flex-shrink-0">
-                          <img
-                            src={
-                              el.User?.image ||
-                              `https://ui-avatars.com/api/?name=${
-                                // Klo nama ada spasi (lebih dari 1 kata), pake nama lengkap
-                                // Klo cuma 1 kata, ambil huruf pertama aja
-                                el.sender.includes(" ") ? el.sender : el.sender.charAt(0)
-                              }&background=random`
-                            }
-                            alt={el.sender}
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
+                          <img src={el.User?.image || `https://ui-avatars.com/api/?name=${el.sender.includes(" ") ? el.sender : el.sender.charAt(0)}&background=random`} alt={el.sender} className="w-8 h-8 rounded-full object-cover" />
                         </div>
                       )}
+                      {/* Tampilkan pesan */}
                       <div>
                         <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
-                          {/* Tampilkan nama sender klo bukan user yg login */}
-                          {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
-                          <p className="text-sm text-gray-800">{el.content}</p>
-                        </div>
-                      </div>
-                      )}
-                      <div>
-                        <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
+                          {/* Tampilkan nama sender jika bukan user yang login */}
                           {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
                           <p className="text-sm text-gray-800">{el.content}</p>
                         </div>
