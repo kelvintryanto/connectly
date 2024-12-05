@@ -30,6 +30,56 @@ Inget:
 - Style dibikin object biar rapi
 - Default pake light mode
 
-NB: Klo bingung, inget aja context itu kyk tas yg isinya bisa diambil di mana aja!
 
+CATATAN LOGIC CHAT APP 
+
+1. STATE MANAGEMENT 🔄
+- chatState: state utama utk nyimpen semua data chat
+- Isinya: roomchat, chat, room, message, email, user, ai
+- Pake useState hooks dari React
+
+2. SOCKET CONNECTION 🔌
+- Socket.io dipake utk real-time chat
+- Connect pas component mount
+- Event yg dipake:
+  * userData: kirim data user
+  * ChatUpdate: update chat realtime
+  * join_room: masuk ke room
+  * leave_room: keluar dari room
+
+3. ROOM MANAGEMENT 🏠
+- fetchRoomChat: ambil semua room
+- handleDetailClick: 
+  * Leave room lama
+  * Join room baru
+  * Update state room aktif
+  * Fetch chat di room tsb
+
+4. CHAT LOGIC 💬
+- Layout chat:
+  * Chat user -> align kanan, bg hijau
+  * Chat org lain -> align kiri, bg abu2
+- Avatar logic:
+  * Cek el.User?.image dulu
+  * Klo gak ada, pake ui-avatars.com
+  * Format: https://ui-avatars.com/api/?name=[NAMA]&background=random
+  * Klo nama ada spasi (mis: "John Doe") -> pake full
+  * Klo 1 kata (mis: "John") -> ambil huruf pertama ("J")
+
+5. FITUR TAMBAHAN ✨
+- Clear chat: hapus semua chat di room
+- Leave room: keluar dari room
+- Theme toggle: ganti light/dark mode
+- Toast notification: feedback ke user
+
+6. SECURITY 🔒
+- Pake token di localStorage
+- Header Authorization di tiap request
+- Validasi user di backend
+
+TIPS! 💡
+- Selalu handle error pake try-catch
+- Jgn lupa cleanup socket pas unmount
+- State management harus konsisten
+- UI/UX hrs smooth pake animation
 
