@@ -1,4 +1,4 @@
-l"use strict";
+"use strict";
 
 const { Model } = require("sequelize");
 const { hash } = require("../helpers/bcrypt");
