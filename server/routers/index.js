@@ -12,6 +12,7 @@ const router = express.Router();
 router.post(`/register`, authController.register);
 router.post(`/login`, authController.login);
 router.post(`/google-login`, authController.googleLogin);
+router.post("/github-login", authController.githubLogin);
 
 router.use(authentication);
 router.get(`/find`, authController.userData);

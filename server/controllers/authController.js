@@ -145,6 +145,56 @@ class authController {
       const githubEmail = emailResponse.data[0].email;
       const userData = userResponse.data;
       console.log(githubEmail, userData, "<<<<<<<<<<<<<<<<<<<<<<=====================ini datanya cuy");
+      /**
+       * kelvin.tryanto@gmail.com {
+          login: 'kelvintryanto',
+          id: 40573734,
+          node_id: 'MDQ6VXNlcjQwNTczNzM0',
+          avatar_url: 'https://avatars.githubusercontent.com/u/40573734?v=4',
+          gravatar_id: '',
+          url: 'https://api.github.com/users/kelvintryanto',
+          html_url: 'https://github.com/kelvintryanto',
+          followers_url: 'https://api.github.com/users/kelvintryanto/followers',
+          following_url: 'https://api.github.com/users/kelvintryanto/following{/other_user}',
+          gists_url: 'https://api.github.com/users/kelvintryanto/gists{/gist_id}',
+          starred_url: 'https://api.github.com/users/kelvintryanto/starred{/owner}{/repo}',
+          subscriptions_url: 'https://api.github.com/users/kelvintryanto/subscriptions',
+          organizations_url: 'https://api.github.com/users/kelvintryanto/orgs',
+          repos_url: 'https://api.github.com/users/kelvintryanto/repos',
+          events_url: 'https://api.github.com/users/kelvintryanto/events{/privacy}',
+          received_events_url: 'https://api.github.com/users/kelvintryanto/received_events',
+          type: 'User',
+          user_view_type: 'private',
+          site_admin: false,
+          name: 'Kelvin Tryanto',
+          company: null,
+          blog: '',
+          location: null,
+          email: null,
+          hireable: true,
+          bio: null,
+          twitter_username: null,
+          notification_email: null,
+          public_repos: 23,
+          public_gists: 0,
+          followers: 1,
+          following: 3,
+          created_at: '2018-06-25T15:47:06Z',
+          updated_at: '2024-11-24T17:02:15Z',
+          private_gists: 0,
+          total_private_repos: 2,
+          owned_private_repos: 1,
+          disk_usage: 282491,
+          collaborators: 0,
+          two_factor_authentication: false,
+          plan: {
+            name: 'free',
+            space: 976562499,
+            collaborators: 0,
+            private_repos: 10000
+          }
+        }
+       */
 
       // buat usernya kalau tidak ada yang terdaftar berdasarkan email
       // kalau ada ambil datanya
@@ -156,21 +206,22 @@ class authController {
           username: userData.login,
           email: githubEmail,
           password: "password_github",
+          // masukkin profile picturenya di sini
         },
         hooks: false,
       });
 
       // bikin access_token dari application connectly
-      // const access_token = signToken({
-      //   userId: user.id,
-      //   username: user.username,
-      //   email: user.username,
-      //   socket: user.socket,
-      // });
-      // console.log(access_token);
+      const access_token = signToken({
+        userId: user.id,
+        username: user.username,
+        email: user.username,
+        socket: user.socket,
+      });
+      console.log(access_token);
 
       // kirim access token dari web application connectly
-      // res.status(200).json({ access_token });
+      res.status(200).json({ access_token });
     } catch (error) {
       console.log(error);
       next(error);
