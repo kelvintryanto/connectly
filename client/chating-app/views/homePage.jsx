@@ -353,12 +353,8 @@ export default function HomePage({ base_url }) {
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 text-center">
                     No messages yet.
                   </motion.p>
-<<<<<<< HEAD
-                ) : (
-=======
                 ) : 
 
->>>>>>> 3fc148ecd1dfbec144d1edc5040f5ae6b1873066
                   chatState.chat.map((el) => (
                     <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
                       {/* Tampilkan gambar profil atau inisial jika bukan user yang login */}
@@ -370,10 +366,7 @@ export default function HomePage({ base_url }) {
                       {/* Tampilkan pesan */}
                       <div>
                         <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
-<<<<<<< HEAD
                           {/* Tampilkan nama sender jika bukan user yang login */}
-=======
->>>>>>> 3fc148ecd1dfbec144d1edc5040f5ae6b1873066
                           {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
                           <p className="text-sm text-gray-800">{el.content}</p>
                         </div>
