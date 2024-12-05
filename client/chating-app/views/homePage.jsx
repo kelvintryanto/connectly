@@ -4,11 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-<<<<<<< HEAD
-import { chevronDownOutline, trashBinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
-=======
 import { chevronDownOutline, trashBinOutline, notificationsOffOutline, eyeOffOutline, archiveOutline, pinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
->>>>>>> 091fdc257aad6b95ddc7e63bcccb3e93b7ba83cd
 import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
 
@@ -21,10 +17,7 @@ export default function HomePage({ base_url }) {
     email: "", // Email user yang sedang login
     user: "", // Username user yang sedang login
     ai: "", // Respons AI
-<<<<<<< HEAD
     image: "",
-=======
->>>>>>> 091fdc257aad6b95ddc7e63bcccb3e93b7ba83cd
   });
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -37,10 +30,7 @@ export default function HomePage({ base_url }) {
   const [activeRoom, setActiveRoom] = useState(null);
   const navigate = useNavigate();
   const { currentTheme, setCurrentTheme, theme } = useContext(themeContext);
-<<<<<<< HEAD
   // const []
-=======
->>>>>>> 091fdc257aad6b95ddc7e63bcccb3e93b7ba83cd
 
   const fetchUser = async () => {
     try {
