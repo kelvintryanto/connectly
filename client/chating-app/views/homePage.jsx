@@ -4,31 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
 import socket from "..";
 import { IonIcon } from "@ionic/react";
-import { chevronDownOutline,
-   trashBinOutline, 
-  notificationsOffOutline,
-  eyeOffOutline,
-  archiveOutline,
-  pinOutline,
-  exitOutline,
-  micOutline,
-  sendOutline,
-  sunnyOutline,
-  moonOutline
-} from "ionicons/icons";
+import { chevronDownOutline, trashBinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
-
 
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
     roomchat: [], // Daftar semua room chat
-    chat: [],     // Daftar pesan dalam room aktif
-    room: 0,      // ID room aktif
-    message: "",  // Pesan yang sedang diketik user
-    email: "",    // Email user yang sedang login
-    user: "",     // Username user yang sedang login
-    ai: "",       // Respons AI 
+    chat: [], // Daftar pesan dalam room aktif
+    room: 0, // ID room aktif
+    message: "", // Pesan yang sedang diketik user
+    email: "", // Email user yang sedang login
+    user: "", // Username user yang sedang login
+    ai: "", // Respons AI
+    image: "",
   });
   const [roomchat, setRoomChat] = useState([]);
   const [chat, setChat] = useState([]);
@@ -41,7 +30,7 @@ export default function HomePage({ base_url }) {
   const [activeRoom, setActiveRoom] = useState(null);
   const navigate = useNavigate();
   const { currentTheme, setCurrentTheme, theme } = useContext(themeContext);
-
+  // const []
 
   const fetchUser = async () => {
     try {
@@ -55,7 +44,6 @@ export default function HomePage({ base_url }) {
       console.error("Error fetching user:", error);
     }
   };
-
 
   const fetchRoomChat = async () => {
     try {
@@ -85,11 +73,14 @@ export default function HomePage({ base_url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
+      // console.log(data);
+
       setUser(data.data.username);
-      setChatState(prev => ({
+      setChatState((prev) => ({
         ...prev,
-        user: data.data.username
+        user: data.data.username,
       }));
+      // console.log(data.data.image.image);
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +99,6 @@ export default function HomePage({ base_url }) {
 
     socket.emit("userData", email);
     // socket.on("ragagantenk", (event) => {
-    //   // console.log(event, "<< event");
     // });
 
     socket.on("ChatUpdate", (event) => {
@@ -149,6 +139,7 @@ export default function HomePage({ base_url }) {
       setChat(data.data.Chats);
       socket.emit("join_room", `room${roomId}`);
       console.log(`Joined room: room${roomId}`);
+      // console.log(data.data.Chats);
 
       // Optional: Add AI message or other actions for the new room
       // setChat((prev) => [...prev, { id: Date.now(), sender: "🤖", content: data.ai }]);
@@ -201,33 +192,33 @@ export default function HomePage({ base_url }) {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-      
+
       // Reset semua state yg berhubungan dgn room
       setRoom(0);
       setChat([]);
       setActiveRoom(null);
-      setChatState(prev => ({
+      setChatState((prev) => ({
         ...prev,
         room: 0,
         chat: [],
-        message: ""
+        message: "",
       }));
-      
+
       // Emit leave room ke socket
       socket.emit("leave_room", `room${roomId}`);
-      
+
       fetchRoomChat();
-      
+
       showToast("Berhasil keluar dari room! 👋", "success");
-      
     } catch (error) {
       console.log(error);
-      showToast("Gagal keluar dari room 😢", "error"); 
+      showToast("Gagal keluar dari room 😢", "error");
     }
   }
 
   const showToast = (message, type = "success") => {
-    Toastify({text: message,
+    Toastify({
+      text: message,
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -264,20 +255,14 @@ export default function HomePage({ base_url }) {
   };
 
   const toggleTheme = () => {
-    setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
+    setCurrentTheme(currentTheme === "light" ? "dark" : "light");
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
-      className={`min-h-screen ${theme[currentTheme].bgColor}`}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`min-h-screen ${theme[currentTheme].bgColor}`}>
       <div className="container mx-auto pt-6 px-6">
         <div className="flex h-[calc(100vh-88px)]">
-          <motion.aside 
-            initial={{ x: -100, opacity: 0 }} 
-            animate={{ x: 0, opacity: 1 }} 
-            transition={{ type: "spring", stiffness: 100 }} 
-            className={`w-1/4 bg-gradient-to-br ${theme[currentTheme].asideBg} backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-l-lg border-r border-blue-200`}
-          >
+          <motion.aside initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className={`w-1/4 bg-gradient-to-br ${theme[currentTheme].asideBg} backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-l-lg border-r border-blue-200`}>
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-2xl font-bold text-gray-800">Welcome, {chatState.user}!</h1>
               <div className="flex space-x-2">
@@ -292,7 +277,8 @@ export default function HomePage({ base_url }) {
                 backgroundImage: "url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGo0ZDRhbnIwaGRxdnB6aTVvbDhsbzV1Mnl4a3QybW9yNDJ2d2tmZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GRPy8MKag9U1U88hzY/giphy.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-              }}></div>
+              }}
+            ></div>
             <ul className="flex-1 overflow-y-auto">
               <AnimatePresence>
                 {chatState.roomchat.map((el) => (
@@ -304,7 +290,8 @@ export default function HomePage({ base_url }) {
                     whileHover={{ scale: 1.02 }}
                     className={`group relative p-2 hover:bg-gray-300 rounded flex justify-between items-center transition duration-300 cursor-pointer
                                         ${activeRoom === el.id ? "bg-blue-200" : ""}`}
-                    onClick={() => handleDetailClick(el.id)}>
+                    onClick={() => handleDetailClick(el.id)}
+                  >
                     <div className="flex items-center flex-1">
                       <img src={el.image} alt="Profile" className="w-10 h-10 rounded-full flex-shrink-0 object-cover shadow-md" />
                       <div className="ml-3">
@@ -320,20 +307,12 @@ export default function HomePage({ base_url }) {
 
           <motion.main initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="flex-1 bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm p-4 flex flex-col shadow-sm rounded-r-lg">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-800">{chatState.room ? `Chat in Room: ${chatState.room}` : "No Room Selected"}</h2>
               <div className="flex items-center gap-2">
                 {activeRoom && (
                   <div className="relative">
-                    <button 
-                      onClick={(e) => handleDropdownClick(e, activeRoom)} 
-                      className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
-                    >
-                      <IonIcon 
-                        icon={chevronDownOutline} 
-                        className={`w-6 h-6 text-gray-500 hover:text-gray-700 transition-transform duration-200 ${openMenu === activeRoom ? "rotate-180" : ""}`} 
-                      />
+                    <button onClick={(e) => handleDropdownClick(e, activeRoom)} className="p-2 rounded-full hover:bg-gray-200/20 transition-colors">
+                      <IonIcon icon={chevronDownOutline} className={`w-6 h-6 text-gray-500 hover:text-gray-700 transition-transform duration-200 ${openMenu === activeRoom ? "rotate-180" : ""}`} />
                     </button>
 
                     {openMenu === activeRoom && (
@@ -344,7 +323,8 @@ export default function HomePage({ base_url }) {
                             handleClear();
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                        >
                           <IonIcon icon={trashBinOutline} />
                           Clear Chat
                         </button>
@@ -355,7 +335,8 @@ export default function HomePage({ base_url }) {
                             handleLeave(activeRoom);
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2">
+                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                        >
                           <IonIcon icon={exitOutline} />
                           Leave Room
                         </button>
@@ -363,14 +344,8 @@ export default function HomePage({ base_url }) {
                     )}
                   </div>
                 )}
-                <button 
-                  onClick={toggleTheme}
-                  className="p-2 rounded-full hover:bg-gray-200/20 transition-colors"
-                >
-                  <IonIcon 
-                    icon={currentTheme === 'light' ? moonOutline : sunnyOutline} 
-                    className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors"
-                  />
+                <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-200/20 transition-colors">
+                  <IonIcon icon={currentTheme === "light" ? moonOutline : sunnyOutline} className="w-6 h-6 text-gray-500 hover:text-gray-700 transition-colors" />
                 </button>
               </div>
             </div>
@@ -382,11 +357,18 @@ export default function HomePage({ base_url }) {
                     No messages yet.
                   </motion.p>
                 ) : (
+                  // logika chat kalau dia sendernya sama dengan user, maka dikanan, kalau tidak dikiri
                   chatState.chat.map((el) => (
                     <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
+                      {/* kalo sendernya bukan user, maka tampilkan image atau inisial namanya*/}
+                      {chatState.user !== el.sender && (
+                        <div className="mr-2 flex-shrink-0">
+                          <img src={el.User?.image || `https://ui-avatars.com/api/?name=${el.sender.includes(" ") ? el.sender : el.sender.charAt(0)}&background=random`} alt={el.sender} className="w-8 h-8 rounded-full object-cover" />
+                        </div>
+                      )}
                       <div>
-                        <div className={`${chatState.user === el.sender ? "bg-blue-200 text-right" : "bg-green-100 text-left"} text-xs text-gray-800 p-1 rounded-t-lg w-fit mb-1`}>{chatState.user === el.sender ? `You` : el.sender}</div>
                         <div className={`${chatState.user === el.sender ? "bg-green-200" : "bg-gray-200"} p-3 rounded-lg max-w-full w-fit break-words shadow-md`}>
+                          {chatState.user !== el.sender && <p className="text-xs font-medium text-gray-600 mb-1">{el.sender}</p>}
                           <p className="text-sm text-gray-800">{el.content}</p>
                         </div>
                       </div>
@@ -397,7 +379,7 @@ export default function HomePage({ base_url }) {
             </div>
 
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mt-4">
-              <motion.form whileTap={{ scale: 0.99 }} className="flex" onSubmit={(e) => handleMessage(e)}>
+              <motion.form whileTap={{ scale: 0.99 }} className="flex gap-2" onSubmit={(e) => handleMessage(e)}>
                 <input
                   type="text"
                   placeholder="Type a message..."
@@ -410,11 +392,11 @@ export default function HomePage({ base_url }) {
                     }));
                   }}
                 />
-                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                  <IonIcon icon={micOutline} className="text-white" />
+                <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                  <IonIcon icon={micOutline} className="w-6 h-6" />
                 </button>
-                <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-4 py-2 hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                  <IonIcon icon={sendOutline} className="text-white" />
+                <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                  <IonIcon icon={sendOutline} className="w-6 h-6" />
                 </button>
               </motion.form>
             </motion.div>
