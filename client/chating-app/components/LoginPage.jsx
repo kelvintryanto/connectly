@@ -81,9 +81,9 @@ export default function LoginPage({ base_url }) {
           </div>
 
           <div className="flex justify-between items-center mb-6">
-            <a href="#" className="text-sm text-gray-600 hover:text-gray-800">
+{/*             <a href="#" className="text-sm text-gray-600 hover:text-gray-800">
               Forgot your password?
-            </a>
+            </a> */}
           </div>
 
           <button type="submit" className="w-full bg-pink-400 text-white py-3 rounded-xl hover:bg-pink-500">
