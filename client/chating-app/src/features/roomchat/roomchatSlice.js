@@ -32,7 +32,7 @@ export const { fetchPending, fetchSuccess, fetchReject } = roomchatSlice.actions
 export const fetchAsync = () => async (dispatch) => {
   try {
     dispatch(fetchPending());
-    const { data } = await axios.get("http://localhost:3000/roomchat/total", {
+    const { data } = await axios.get("https://server.ragaram.site/roomchat/total", {
       headers: {
         Authorization: `Bearer ${localStorage.access_token}`,
       },

@@ -35,7 +35,7 @@ class authController {
           email,
         },
       });
-      //   console.log(user);
+      console.log(user);
 
       if (!user) {
         throw {
@@ -206,7 +206,7 @@ class authController {
           username: userData.login,
           email: githubEmail,
           password: "password_github",
-          // masukkin profile picturenya di sini
+          image: userData.avatar_url,
         },
         hooks: false,
       });

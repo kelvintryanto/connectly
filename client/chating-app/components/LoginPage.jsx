@@ -15,6 +15,7 @@ export default function LoginPage({ base_url }) {
   async function onSubmit(e) {
     e.preventDefault();
     try {
+      console.log("base_url: ", base_url);
       const { data } = await axios.post(`${base_url}/login`, { email, password });
       // console.log(data.access_token);
 
@@ -65,13 +66,6 @@ export default function LoginPage({ base_url }) {
           </div>
         </div>
 
-        {/* Logo & KORG Text */}
-        {/* <div className="flex justify-center mb-8 items-center">
-          <h1 className="text-2xl font-extrabold text-gray-700 ml-4">KORG</h1>
-          <IonIcon icon={laptopOutline} className="w-16 h-16 text-gray-700" />
-          <IonIcon icon={leafOutline} className="w-8 h-8 text-gray-700" />
-        </div> */}
-
         <form onSubmit={onSubmit}>
           <div className="mb-4">
             <div className="flex items-center bg-white/50 rounded-xl px-4">
@@ -103,9 +97,10 @@ export default function LoginPage({ base_url }) {
           <div className="flex justify-center items-center">
             <GoogleLogin onSuccess={googleLogin} />
           </div>
-          <div className="flex justify-center items-center">
+
+          {<div className="flex justify-center items-center">
             <GithubLoginButton base_url={base_url} />
-          </div>
+          </div>}
         </div>
       </div>
     </div>
