@@ -98,9 +98,9 @@ export default function LoginPage({ base_url }) {
             <GoogleLogin onSuccess={googleLogin} />
           </div>
 
-          <div className="flex justify-center items-center">
+          {<div className="flex justify-center items-center">
             <GithubLoginButton base_url={base_url} />
-          </div>
+          </div>}
         </div>
       </div>
     </div>
