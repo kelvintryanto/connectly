@@ -153,7 +153,7 @@ export default function List({ base_url }) {
                   <h2 className="text-2xl font-semibold text-gray-700 mb-2">{el.name}</h2>
                   <p className="text-gray-500 mb-4">Join this room to start chatting with others!</p>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-violet-500">{el.members || 0} members</span>
+{/*                     <span className="text-sm text-violet-500">{el.members || 0} members</span> */}
                     <div className="flex items-center">
                       <button onClick={() => onJoin(el.id)} className="px-6 py-2 rounded-full bg-violet-100 text-violet-600 hover:bg-violet-200 transition duration-300">
                         Join Room
