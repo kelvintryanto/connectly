@@ -295,7 +295,7 @@ export default function HomePage({ base_url }) {
                       <img src={el.image} alt="Profile" className="w-10 h-10 rounded-full flex-shrink-0 object-cover shadow-md" />
                       <div className="ml-3">
                         <h3 className="font-semibold text-gray-800">{el.name}</h3>
-                        <p className="text-sm text-gray-600">member chat:</p>
+{/*                         <p className="text-sm text-gray-600">member chat:</p> */}
                       </div>
                     </div>
                   </motion.li>
