@@ -7,7 +7,8 @@ import { IonIcon } from "@ionic/react";
 import { chevronDownOutline, trashBinOutline, notificationsOffOutline, eyeOffOutline, archiveOutline, pinOutline, exitOutline, micOutline, sendOutline, sunnyOutline, moonOutline } from "ionicons/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { themeContext } from "../src/context/ThemeContext";
-
+import React from "react";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 export default function HomePage({ base_url }) {
   const [chatState, setChatState] = useState({
     roomchat: [], // Daftar semua room chat
@@ -31,6 +32,20 @@ export default function HomePage({ base_url }) {
   const navigate = useNavigate();
   const { currentTheme, setCurrentTheme, theme } = useContext(themeContext);
   // const []
+
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
+
+  useEffect(() => {
+    setChatState((prev) => ({
+      ...prev,
+      message: transcript,
+    }));
+    // console.log(chatState.message);
+  }, [transcript]);
 
   const fetchUser = async () => {
     try {
@@ -254,7 +269,7 @@ export default function HomePage({ base_url }) {
     setOpenMenu(openMenu === roomId ? null : roomId);
   };
 
-  // fungsi untuk toggle theme 
+  // fungsi untuk toggle theme
   const toggleTheme = () => {
     setCurrentTheme(currentTheme === "light" ? "dark" : "light");
   };
@@ -278,7 +293,8 @@ export default function HomePage({ base_url }) {
                 backgroundImage: "url('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGo0ZDRhbnIwaGRxdnB6aTVvbDhsbzV1Mnl4a3QybW9yNDJ2d2tmZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GRPy8MKag9U1U88hzY/giphy.webp')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-              }}></div>
+              }}
+            ></div>
             <ul className="flex-1 overflow-y-auto">
               <AnimatePresence>
                 {chatState.roomchat.map((el) => (
@@ -290,12 +306,13 @@ export default function HomePage({ base_url }) {
                     whileHover={{ scale: 1.02 }}
                     className={`group relative p-2 hover:bg-gray-300 rounded flex justify-between items-center transition duration-300 cursor-pointer
                                         ${activeRoom === el.id ? "bg-blue-200" : ""}`}
-                    onClick={() => handleDetailClick(el.id)}>
+                    onClick={() => handleDetailClick(el.id)}
+                  >
                     <div className="flex items-center flex-1">
                       <img src={el.image} alt="Profile" className="w-10 h-10 rounded-full flex-shrink-0 object-cover shadow-md" />
                       <div className="ml-3">
                         <h3 className="font-semibold text-gray-800">{el.name}</h3>
-{/*                         <p className="text-sm text-gray-600">member chat:</p> */}
+                        {/*                         <p className="text-sm text-gray-600">member chat:</p> */}
                       </div>
                     </div>
                   </motion.li>
@@ -322,7 +339,8 @@ export default function HomePage({ base_url }) {
                             handleClear();
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                        >
                           <IonIcon icon={trashBinOutline} />
                           Clear Chat
                         </button>
@@ -333,7 +351,8 @@ export default function HomePage({ base_url }) {
                             handleLeave(activeRoom);
                             setOpenMenu(null);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2">
+                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                        >
                           <IonIcon icon={exitOutline} />
                           Leave Room
                         </button>
@@ -353,8 +372,7 @@ export default function HomePage({ base_url }) {
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500 text-center">
                     No messages yet.
                   </motion.p>
-                ) : 
-
+                ) : (
                   chatState.chat.map((el) => (
                     <motion.div key={el.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 500 }} className={`mb-4 flex ${chatState.user === el.sender ? "justify-end" : "justify-start"}`}>
                       {/* Tampilkan gambar profil atau inisial jika bukan user yang login */}
@@ -372,7 +390,7 @@ export default function HomePage({ base_url }) {
                         </div>
                       </div>
                     </motion.div>
-                  )
+                  ))
                 )}
               </AnimatePresence>
             </div>
@@ -392,9 +410,9 @@ export default function HomePage({ base_url }) {
                   }}
                 />
                 {/* Voice button dicomment dulu */}
-                {/* <button type="button" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
-                    <IonIcon icon={micOutline} className="w-6 h-6" />
-                </button> */}
+                <button type="button" onClick={SpeechRecognition.startListening} className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
+                  <IonIcon icon={micOutline} className="w-6 h-6" />
+                </button>
                 <button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:from-blue-500 hover:to-purple-600 transition duration-300">
                   <IonIcon icon={sendOutline} className="w-6 h-6" />
                 </button>
@@ -404,5 +422,5 @@ export default function HomePage({ base_url }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
